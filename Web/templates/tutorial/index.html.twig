@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="content-page">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <!-- Start content -->
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="about-section-box">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <h1>Tutorials List</h1>
+
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        {#<th>Video</th>#}
+                                        <th>DateTuto</th>
+                                        <th>Category</th>
+                                        <th>Titre</th>
+                                        <th>Description</th>
+                                        <th>Prix</th>
+                                        <th>actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for tutorial in tutorials %}
+                                        <tr>
+                                            <td>{{ tutorial.id }}</td>
+                                            {#<td>{{ tutorial.video }}</td>#}
+                                            <td>{{ tutorial.dateTuto ? tutorial.dateTuto|date('Y-m-d H:i:s') : '' }}</td>
+                                            <td>{{ tutorial.category }}</td>
+                                            <td>{{ tutorial.titre }}</td>
+                                            <td>{{ tutorial.description }}</td>
+                                            <td>{{ tutorial.prix }}</td>
+                                            <td>
+                                                <a href="{{ path('tutorial_show', {'id': tutorial.id}) }}">show</a>
+                                                <a href="{{ path('tutorial_edit', {'id': tutorial.id}) }}">edit</a>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="8">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                                <a href="{{ path('tutorial_new') }}">Create new</a>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12 text-center">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+
+
+{% endblock %}

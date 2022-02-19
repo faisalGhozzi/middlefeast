@@ -41,7 +41,7 @@
             <a class="navbar-brand" href="index.html">
                 <!-- <script src="{{asset('assets/js/custom.js')}}"></script> -->
                 <!-- <img src="assets/images/logo.png" alt="" /> -->
-                 <img src="{{ asset ('assets/images/logo.png') }}" alt="" height="200" width="300"  />
+                 <img src="{{ asset ('assets/images/logo.png') }}" alt="" height="100" width="150"  />
             </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars-rs-food" aria-controls="navbars-rs-food" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -66,8 +66,18 @@
                             <a class="dropdown-item" href="gallery.html">Gallery</a>
                         </div>
                     </li>
+                    {% if app.user %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Profile</a>
+                            <div class="dropdown-menu" aria-labelledby="dropdown-a">
+                                <a class="dropdown-item" href="#">My Profile</a>
+                                <a class="dropdown-item" href="{{ path('app_logout') }}">Logout</a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
+                    {% endif %}
 
-                    <li class="nav-item"><a class="nav-link" href="contact.html">Sign On</a></li>
                 </ul>
             </div>
         </div>

@@ -38,7 +38,7 @@
 <header class="top-navbar ">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="{{ path('home') }}">
+            <a class="navbar-brand" href="index.html">
                 <!-- <script src="{{asset('assets/js/custom.js')}}"></script> -->
                 <!-- <img src="assets/images/logo.png" alt="" /> -->
                  <img src="{{ asset ('assets/images/logo.png') }}" alt="" height="100" width="150"  />
@@ -48,9 +48,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbars-rs-food">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a class="nav-link" href="{{ path('home') }}">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="menu.html">Tutorial</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ path('formation_index') }}">Formation</a></li>
+                    <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('tutorial_index') }}">Tutorial</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">Events</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Forum</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown-a">
@@ -58,14 +58,15 @@
 
                         </div>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Cart</a>
-                        <div class="dropdown-menu" aria-labelledby="dropdown-a">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="{{ path('panier_index') }}">Cart</a>
+                       {# <div class="dropdown-menu" aria-labelledby="dropdown-a">
                             <a class="dropdown-item" href="reservation.html">Reservation</a>
                             <a class="dropdown-item" href="stuff.html">Stuff</a>
                             <a class="dropdown-item" href="gallery.html">Gallery</a>
-                        </div>
+                        </div>#}
                     </li>
+
                     {% if app.user %}
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Profile</a>
@@ -191,7 +192,7 @@
 
 <!-- ALL JS FILES -->
 
-<link rel="stylesheet" href="{{asset('assets/css/bootstrap.min.css')}}">
+
 
 <script src="{{asset('assets/js/jquery-3.2.1.min.js')}}"></script>
 <script src="{{asset('assets/js/popper.min.js')}}"></script>

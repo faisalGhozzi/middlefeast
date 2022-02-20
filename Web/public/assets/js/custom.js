@@ -53,6 +53,11 @@
 			return false; 
 		}); 
 	});
+
+	$('.custom-file-input').on('change',function(){
+		var fileName = $(this).val().replace(/.*(\/|\\)/, '');
+		$(this).next('label').addClass("selected").html(fileName);
+	});
 	
 	/* ..............................................
     Special Menu

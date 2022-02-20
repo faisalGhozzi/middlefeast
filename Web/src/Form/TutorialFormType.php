@@ -12,6 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class TutorialFormType extends AbstractType
 {
@@ -25,8 +26,10 @@ class TutorialFormType extends AbstractType
             ->add('category',ChoiceType::class,[
                 'choices' => [
                     'Pick Category' => 'Pick Category',
-                    'Sweet ' => 'Sweet',
-                    'Salted' => 'Salted'
+                    'Starters'=>'Starters',
+                    'Main Dished'=>'Main Dished',
+                    'Side Dished'=>'Side Dished',
+                    'Deserts'=>'Deserts',
                 ],
                 'expanded'=>false,
                 'multiple'=>false])
@@ -46,6 +49,33 @@ class TutorialFormType extends AbstractType
                 'attr' => [
                     'placeholder' => 'Price',
                 ]])
+            ->add('video',FileType::class,[
+                'label' => 'Tutorial (video file)',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '150Mi',
+                        'mimeTypes' => [
+                            'video/mp4',
+
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid video file',
+                    ])
+                ],
+            ])
+
+            ->add('image',FileType::class,[
+                'label' => 'Image',
+                'mapped' => false,
+                'required' => false,
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2Mi',
+                        'mimeTypesMessage' => 'Please upload a valid image file',
+                    ])
+                ],
+            ])
 
 
         ;

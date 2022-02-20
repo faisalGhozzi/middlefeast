@@ -18,12 +18,16 @@ class Tutorial
      */
     private $id;
 
-    /*
+
     /**
-     * @ORM\Column(type="string",length=255)
-     * @Assert\NotBlank(message="You must select a video for your tutorial !")
+     * @ORM\Column(type="string",length=255,nullable=true)
      */
-    /*private $video;*/
+    private $video;
+
+    /**
+     * @ORM\Column(type="string",length=255,nullable=true)
+     */
+    private $image;
 
 
     /**
@@ -53,6 +57,8 @@ class Tutorial
     /**
      * @ORM\Column(type="float")
      * @Assert\NotBlank(message="Prix can not be empty !")
+     * @Assert\Positive(message="Price should be >0")
+     *
      */
     private $prix;
 
@@ -138,14 +144,20 @@ class Tutorial
     {
         $this->prix = $prix;
     }
-    
-    
-    
-    
-    
 
 
-   
-    
-    
+    public function getImage()
+    {
+        return $this->image;
+    }
+
+
+    public function setImage($image): void
+    {
+        $this->image = $image;
+    }
+
+
+
+
 }

@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}<title>Log in</title>{% endblock %}
 
 {% block body %}
 <div class="contact-box">
@@ -69,6 +69,16 @@
                         <div class="col-md-12">
                             <center>
                                 <p>If you don't have an account yet, Please <a href="{{ path('app_register') }}">Sign up</a></p>
+                            </center>
+                        </div>
+
+                        <div class="col-md-12">
+                            <hr>
+                        </div>
+
+                        <div class="col-md-12">
+                            <center>
+                                <p><a href="{{ path('app_forgot_password_request') }}">Forgot password ?</a></p>
                             </center>
                         </div>
                     </div>

@@ -27,7 +27,7 @@ class TutorialController extends AbstractController
      */
     public function index(TutorialRepository $tutorialRepository): Response
     {
-        return $this->render('tutorial/index.html.twig', [
+        return $this->render('tutorial/index.html.twig.twig', [
             'tutorials' => $tutorialRepository->findAll(),
         ]);
     }

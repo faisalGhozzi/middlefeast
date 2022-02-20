@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier index{% endblock %}
+
+{% block body %}
+    <div class="content-page">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+
+        <!-- Start content -->
+
+        <div class="content">
+            <div class="container-fluid">
+                <div class="about-section-box">
+                    <div class="container">
+                        <div class="row">
+
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <br>
+                                <h1>Panier</h1>
+
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Total</th>
+                                        <th>actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for panier in paniers %}
+                                        <tr>
+                                            <td>{{ panier.id }}</td>
+                                            <td>{{ panier.total }}</td>
+                                            <td>
+                                                <a href="{{ path('panier_show', {'id': panier.id}) }}">show</a>
+                                                <a href="{{ path('panier_edit', {'id': panier.id}) }}">edit</a>
+                                            </td>
+                                        </tr>
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="3">no records found</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                                <a href="{{ path('panier_new') }}">Create new</a>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

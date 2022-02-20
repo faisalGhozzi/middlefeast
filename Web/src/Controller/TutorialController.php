@@ -7,6 +7,8 @@ use App\Form\TutorialFormType;
 use App\Repository\TutorialRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,10 +47,47 @@ class TutorialController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($tutorial);
-            $entityManager->flush();
+            /** @var UploadedFile $videoFile */
+            $videoFile = $form->get('video')->getData();
 
-            return $this->redirectToRoute('tutorial_index', [], Response::HTTP_SEE_OTHER);
+            /** @var UploadedFile $imageFile */
+            $imageFile = $form->get('image')->getData();
+
+            if($videoFile && $imageFile)
+            {
+                /* upload Video */
+                $originalFilename = pathinfo($videoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$videoFile->guessExtension();
+
+                try {
+                    $videoFile->move(
+                        $this->getParameter('uploads_tutos'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $tutorial->setVideo($newFilename);
+
+
+                /* upload Image */
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+
+                try {
+                    $imageFile->move(
+                        $this->getParameter('uploads_tutos'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+                $tutorial->setImage($newFilename);
+
+                $entityManager->persist($tutorial);
+                $entityManager->flush();
+                return $this->redirectToRoute('tutorial_index', [], Response::HTTP_SEE_OTHER);
+            }
         }
 
         return $this->render('tutorial/add.html.twig', [
@@ -79,12 +118,32 @@ class TutorialController extends AbstractController
     public function edit(Request $request, Tutorial $tutorial, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(TutorialFormType::class, $tutorial);
-        $form->handleRequest($request);
+                $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
+            /** @var UploadedFile $videoFile */
+            $videoFile = $form->get('video')->getData();
+            if($videoFile)
+            {
+                $originalFilename = pathinfo($videoFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$videoFile->guessExtension();
+                try {
+                    $videoFile->move(
+                        $this->getParameter('uploads'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
 
-            return $this->redirectToRoute('tutorial_index', [], Response::HTTP_SEE_OTHER);
+                $tutorial->setVideo($newFilename);
+                $entityManager->flush();
+                return $this->redirectToRoute('tutorial_index', [], Response::HTTP_SEE_OTHER);
+            }else{
+                //$tutorial->setVideo(new File($this->getParameter('uploads').'/'.$tutorial->getVideo()));
+                $entityManager->flush();
+
+            }
+
         }
 
         return $this->render('tutorial/edit.html.twig', [

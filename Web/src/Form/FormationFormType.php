@@ -12,12 +12,12 @@ class FormationFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('description')
+            ->add('price')
             ->add('mode')
             ->add('dateDebut')
             ->add('dateFin')
             ->add('duree')
-            ->add('price')
+            ->add('description')
         ;
     }
 

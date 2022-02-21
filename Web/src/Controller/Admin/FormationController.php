@@ -99,10 +99,10 @@ class FormationController extends AbstractController
      */
     public function delete(Request $request, Formation $formation, EntityManagerInterface $entityManager): Response
     {
-        if($this->isCsrfTokenValid('delete'.$formation->getId(), $request->request->get('_token'))){
-            $entityManager->remove($formation);
-            $entityManager->flush();
-        }
+        $formation = $entityManager->getRepository(Formation::class)->find($formation->getId());
+        $entityManager->remove($formation);
+        $entityManager->flush();
+
 
         return $this->redirectToRoute('formation_back_index', [], Response::HTTP_SEE_OTHER);
     }

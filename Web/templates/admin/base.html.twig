@@ -32,7 +32,7 @@
 
         <!-- LOGO -->
         <div class="topbar-left">
-            <a href="index.html" class="logo"><span>Admin<span>to</span></span><i class="mdi mdi-layers"></i></a>
+            <a href="{{ path('admin') }}" class="logo"><span>Middle<span>Feast</span></span><i class="mdi mdi-layers"></i></a>
         </div>
 
         <!-- Button mobile view to collapse sidebar menu -->
@@ -134,11 +134,7 @@
                     </li>
 
                     <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-texture"></i><span> Users </span> </a>
-                    </li>
-
-                    <li class="has_sub">
-                        <a href="javascript:void(0);" class="waves-effect"><i class="mdi mdi-view-list"></i> <span> Administrators </span></a>
+                        <a href="{{ path('user_back_index') }}" class="waves-effect"><i class="mdi mdi-texture"></i><span> Users & Admins </span> </a>
                     </li>
                 </ul>
                 <div class="clearfix"></div>

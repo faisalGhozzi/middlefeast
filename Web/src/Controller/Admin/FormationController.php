@@ -32,7 +32,7 @@ class FormationController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="formation_new")
+     * @Route("/new", name="formation_back_new")
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @return Response
@@ -47,29 +47,29 @@ class FormationController extends AbstractController
             $entityManager->persist($formation);
             $entityManager->flush();
 
-            return $this->redirectToRoute('formation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('formation_back_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('formation/add.html.twig', [
+        return $this->render('admin/formation/add.html.twig', [
             'formation' => $formation,
             'form' => $form->createView(),
         ]);
     }
 
     /**
-     * @Route("/{id}", name="formation_show")
+     * @Route("/{id}", name="formation_back_show")
      * @param Formation $formation
      * @return Response
      */
     public function show(Formation $formation): Response
     {
-        return $this->render('formation/show.html.twig',[
+        return $this->render('admin/formation/show.html.twig',[
             'formation' => $formation,
         ]);
     }
 
     /**
-     * @Route("/{id}/edit", name="formation_edit")
+     * @Route("/{id}/edit", name="formation_back_edit")
      * @param Request $request
      * @param Formation $formation
      * @param EntityManagerInterface $entityManager
@@ -82,16 +82,16 @@ class FormationController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()){
             $entityManager->flush();
-            return $this->redirectToRoute('formation_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('formation_back_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('formation/edit.html.twig', [
+        return $this->render('admin/formation/edit.html.twig', [
             'formation' => $formation,
             'form' => $form->createView(),
         ]);
     }
     /**
-     * @Route("/{id}", name="formation_delete")
+     * @Route("/{id}", name="formation_back_delete")
      * @param Request $request
      * @param Formation $formation
      * @param EntityManagerInterface $entityManager
@@ -104,6 +104,6 @@ class FormationController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('formation_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('formation_back_index', [], Response::HTTP_SEE_OTHER);
     }
 }

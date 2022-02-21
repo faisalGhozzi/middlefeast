@@ -1,8 +1,99 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Formation{% endblock %}
+{% block title %}<title>Course details</title>{% endblock %}
 
 {% block body %}
+    <div class="all-page-title page-breadcrumb">
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1>Details</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End All Pages -->
+
+    <!-- Start blog details -->
+    <div class="blog-box">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="heading-title text-center">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xl-8 col-lg-8 col-12">
+                    <div class="blog-inner-details-page">
+                        <div class="blog-inner-box">
+                            <div class="inner-blog-detail details-page">
+                                <ul>
+                                    <li>Price : <span>
+                                            {% if(formation.price == 0) %} Free {% else %} {{ formation.price }} DT {% endif %}</span>
+                                    </li>
+                                    <li>
+                                        {% if(formation.price > 0) %}  <button class="btn btn-outline-info"> Add to Cart</button>  {% endif %}
+
+                                    </li>
+
+                                </ul>
+                                <hr>
+                                <blockquote style="">
+                                    <h2>Starting and ending dates</h2>
+                                    <p>From {{ formation.dateDebut|date('d M Y') }} to {{ formation.dateFin|date('d M Y') }}.
+                                    </p>
+                                </blockquote>
+                                <hr>
+                                <blockquote style="">
+                                    <h2>Time</h2>
+                                    <p>{{ formation.dateDebut|date('H:i') }}.
+                                    </p>
+                                </blockquote>
+                                <hr>
+                                <blockquote style="">
+                                    <h2>Duration</h2>
+                                    <p>{{ formation.duree }} {% if formation.duree == '1' %} day {% else %} days {% endif %}.</p>
+                                </blockquote>
+                                <hr>
+                                <blockquote style="">
+                                    <h2>Description</h2>
+                                    <p>{{ formation.description }} Lorem Ipsum is simply dummy text of the printing and
+                                        typesetting industry. Lorem Ipsum has been the industry's standard dummy text
+                                        ever since the 1500s, when an unknown printer took a galley of type and
+                                        scrambled it to make a type specimen book. It has survived not only five
+                                        centuries, but also the leap into electronic typesetting, remaining essentially
+                                        unchanged. It was popularised in the 1960s with the release of Letraset sheets
+                                        containing Lorem Ipsum passages, and more recently with desktop publishing
+                                        software like Aldus PageMaker including versions of Lorem Ipsum.
+                                    </p>
+                                </blockquote>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+
+                {# Right #}
+
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-8 col-12 blog-sidebar">
+                    <div class="right-side-blog">
+
+                        <h3>Mode</h3>
+                        <div class="blog-categories">
+                            <ul>
+                                <li><span>{{ formation.mode }}</span></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {#
 <div class="content-page">
     <br>
     <br>
@@ -81,4 +172,5 @@
 
             </div>
         </div>
+        #}
         {% endblock %}

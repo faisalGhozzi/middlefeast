@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}<title>Browse tutorials</title>{% endblock %}
+
+
 {% block body %}
     <div class="all-page-title page-breadcrumb">
         <div class="container text-center">
@@ -49,7 +52,7 @@
 
                     {% endif %}
 
-                    {% if tutorial.category == "Main Dished" %}
+                    {% if tutorial.category == "Main Dishes" %}
 
                         <div class="col-lg-4 col-md-6 special-grid main">
                             <div class="gallery-single fix">

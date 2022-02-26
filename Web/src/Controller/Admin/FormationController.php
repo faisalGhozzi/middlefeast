@@ -97,7 +97,7 @@ class FormationController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function delete(Request $request, Formation $formation, EntityManagerInterface $entityManager): Response
+    public function deleteAction(Request $request, Formation $formation, EntityManagerInterface $entityManager): Response
     {
         $formation = $entityManager->getRepository(Formation::class)->find($formation->getId());
         $entityManager->remove($formation);

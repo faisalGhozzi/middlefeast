@@ -112,7 +112,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="user_back_delete")
+     * @Route("/delete/{id}", name="user_back_delete")
      * @param Request $request
      * @param User $user
      * @param EntityManagerInterface $entityManager

@@ -41,7 +41,7 @@
                                             {% if(tutorial.prix == 0) %} Free {% else %} {{ tutorial.prix }} DT {% endif %}</span>
                                     </li>
                                     <li>
-                                        {% if(tutorial.prix != 0) %}  <button class="btn btn-outline-info"> Add to Cart</button>  {% endif %}
+                                        {% if(tutorial.prix != 0) %}  <a href="{{ path('add_tuto_cart',{'id':tutorial.id}) }}" class="btn btn-info"> Add to Cart</a>  {% endif %}
 
                                     </li>
 

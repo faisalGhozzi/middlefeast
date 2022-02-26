@@ -278,5 +278,11 @@
 <!-- App js -->
 <script src="{{ asset('assets/back/js/jquery.core.js')}}"></script>
 <script src="{{ asset('assets/back/js/jquery.app.js')}}"></script>
+<script type="application/javascript">
+    $('.custom-file-input').on('change',function(){
+        var fileName = $(this).val().replace(/.*(\/|\\)/, '');
+        $(this).next('label').addClass("selected").html(fileName);
+    });
+</script>
 </body>
 </html>

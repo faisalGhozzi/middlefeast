@@ -16,7 +16,6 @@ use Symfony\Component\Routing\Annotation\Route;
  * @package App\Controller
  * @Route("/formation")
  */
-
 class FormationController extends AbstractController
 {
     /**

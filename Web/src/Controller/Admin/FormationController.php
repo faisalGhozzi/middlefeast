@@ -90,14 +90,15 @@ class FormationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+  
     /**
-     * @Route("/{id}", name="formation_back_delete")
+     * @Route("/delete/{id}", name="formation_back_delete")
      * @param Request $request
      * @param Formation $formation
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    public function deleteAction(Request $request, Formation $formation, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request, Formation $formation, EntityManagerInterface $entityManager): Response
     {
         $formation = $entityManager->getRepository(Formation::class)->find($formation->getId());
         $entityManager->remove($formation);

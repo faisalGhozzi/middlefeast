@@ -34,14 +34,14 @@ class UserController extends AbstractController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            if($form->isSubmitted() && $form->isValid()){
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                $em->flush();
 
-            $this->addFlash('message', 'Profile is updated');
-            return $this->redirectToRoute('users');
-        }
+                $this->addFlash('message', 'Profile is updated');
+                return $this->redirectToRoute('users');
+            }
 
         return $this->render('users/edit_profile.html.twig',[
             'editProfileForm' => $form->createView(),
@@ -54,6 +54,7 @@ class UserController extends AbstractController
     public function changeUserPassword(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
         if($request->isMethod('POST')){
+
             $em = $this->getDoctrine()->getManager();
 
             $user = $this->getUser();

@@ -34,67 +34,6 @@ class TutorialController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/new", name="tutorial_new", methods={"GET", "POST"})
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @return Response
-     */
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $tutorial = new Tutorial();
-        $form = $this->createForm(TutorialFormType::class, $tutorial);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $videoFile */
-            $videoFile = $form->get('video')->getData();
-
-            /** @var UploadedFile $imageFile */
-            $imageFile = $form->get('image')->getData();
-
-            if($videoFile && $imageFile)
-            {
-                /* upload Video */
-                $originalFilename = pathinfo($videoFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename.'-'.uniqid().'.'.$videoFile->guessExtension();
-
-                try {
-                    $videoFile->move(
-                        $this->getParameter('uploads_tutos'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-                $tutorial->setVideo($newFilename);
-
-
-                /* upload Image */
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
-
-                try {
-                    $imageFile->move(
-                        $this->getParameter('uploads_tutos'),
-                        $newFilename
-                    );
-                } catch (FileException $e) {
-                    // ... handle exception if something happens during file upload
-                }
-                $tutorial->setImage($newFilename);
-
-                $entityManager->persist($tutorial);
-                $entityManager->flush();
-                return $this->redirectToRoute('tutorial_index', [], Response::HTTP_SEE_OTHER);
-            }
-        }
-
-        return $this->render('tutorial/add.html.twig', [
-            'tutorial' => $tutorial,
-            'form' => $form->createView(),
-        ]);
-    }
 
     /**
      * @Route("/{id}", name="tutorial_show", methods={"GET"})

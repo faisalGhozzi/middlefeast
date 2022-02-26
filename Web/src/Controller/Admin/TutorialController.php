@@ -153,7 +153,7 @@ class TutorialController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tutorial_back_delete", methods={"POST"})
+     * @Route("/delete/{id}", name="tutorial_back_delete", methods={"POST"})
      * @param Request $request
      * @param Tutorial $tutorial
      * @param EntityManagerInterface $entityManager

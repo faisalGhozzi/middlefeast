@@ -90,6 +90,7 @@ class FormationController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+  
     /**
      * @Route("/delete/{id}", name="formation_back_delete")
      * @param Request $request

@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}<title>Browse tutorials</title>{% endblock %}
+
+
 {% block body %}
     <div class="all-page-title page-breadcrumb">
         <div class="container text-center">
@@ -42,14 +45,14 @@
                                 <div class="why-text">
                                     <a href="{{ path('tutorial_show',{'id':tutorial.id}) }}"><h4>{{ tutorial.titre }} </h4></a>
                                     <p>{{ tutorial.description }}</p>
-                                    <h5> {{ tutorial.prix }}DT</h5>
+                                    <h5> {{ tutorial.prix }} DT</h5>
                                 </div>
                             </div>
                         </div>
 
                     {% endif %}
 
-                    {% if tutorial.category == "Main Dished" %}
+                    {% if tutorial.category == "Main Dishes" %}
 
                         <div class="col-lg-4 col-md-6 special-grid main">
                             <div class="gallery-single fix">

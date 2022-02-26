@@ -1,9 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Formation{% endblock %}
+{% block title %}<title>Course details</title>{% endblock %}
 
 {% block body %}
-    <!-- Start All Pages -->
     <div class="all-page-title page-breadcrumb">
         <div class="container text-center">
             <div class="row">
@@ -29,38 +28,44 @@
                     <div class="blog-inner-details-page">
                         <div class="blog-inner-box">
                             <div class="side-blog-img">
-
-
                             </div>
                             <div class="inner-blog-detail details-page">
                                 <ul>
                                     <li>Price : <span>
                                             {% if(formation.price == 0) %} Free {% else %} {{ formation.price }} DT {% endif %}</span>
                                     </li>
-                                    <li>Date Début : <span>
-                                            {{ formation.dateDebut|date("d M Y") }}</span>
-                                    </li>
-                                    <li>Date Fin : <span>
-                                            {{ formation.dateFin|date("d M Y") }}</span>
-                                    </li>
-                                    <li>Durée : <span>
-                                            {{ formation.duree }} heures</span>
-                                    </li>
-
                                     <li>
-                                        {% if(formation.price != 0) %}  <a href="{{ path('add_formation_cart',{'id':formation.id}) }}" class="btn btn-info"> Add to Cart</a>  {% endif %}
+                                        {% if(formation.price > 0) %}  <button class="btn btn-outline-info"> Add to Cart</button>  {% endif %}
 
                                     </li>
 
                                 </ul>
-
-
-
+                                <hr>
+                                <blockquote style="">
+                                    <h2>Starting and ending dates</h2>
+                                    <p>From {{ formation.dateDebut|date('d M Y') }} to {{ formation.dateFin|date('d M Y') }}.
+                                    </p>
+                                </blockquote>
+                                <hr>
+                                <blockquote style="">
+                                    <h2>Time</h2>
+                                    <p>{{ formation.dateDebut|date('H:i') }}.
+                                    </p>
+                                </blockquote>
+                                <hr>
+                                <blockquote style="">
+                                    <h2>Duration</h2>
+                                    <p>{{ formation.duree }} {% if formation.duree == '1' %} day {% else %} days {% endif %}.</p>
+                                </blockquote>
                                 <hr>
                                 <blockquote style="">
                                     <h2>Description</h2>
                                     <p>{{ formation.description }}
                                     </p>
+                                </blockquote>
+                                <hr>
+                                <blockquote style="">
+                                    {% if(formation.price != 0) %}  <a href="{{ path('add_formation_cart',{'id':formation.id}) }}" class="btn btn-info"> Add to Cart</a>  {% endif %}
                                 </blockquote>
                             </div>
                         </div>
@@ -81,11 +86,12 @@
 
                             </ul>
                         </div>
+
+
                     </div>
                 </div>
 
             </div>
         </div>
     </div>
-    <!-- End details -->
 {% endblock %}

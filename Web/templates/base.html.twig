@@ -48,9 +48,9 @@
             </button>
             <div class="collapse navbar-collapse" id="navbars-rs-food">
                 <ul class="navbar-nav ml-auto">
-                    <li class="nav-item active"><a class="nav-link" href="index.html">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ path('tutorial_index') }}">Tutorial</a></li>
-                    <li class="nav-item"><a class="nav-link" href="about.html">Events</a></li>
+                    <li class="nav-item "><a class="nav-link" href="{{ path('home') }}">Home</a></li>
+                    <li class="nav-item "><a class="nav-link " href="{{ path('tutorial_index') }}">Tutorial</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ path('formation_index') }}">Events</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="dropdown-a" data-toggle="dropdown">Forum</a>
                         <div class="dropdown-menu" aria-labelledby="dropdown-a">
@@ -79,6 +79,9 @@
                         </li>
                     {% else %}
                         <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
+                    {% endif %}
+                    {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPER_ADMIN") %}
+                    <li class="nav-item "><a class="nav-link" href="{{ path('admin') }}">Dashboard</a></li>
                     {% endif %}
 
                 </ul>
@@ -206,6 +209,37 @@
 <script src="{{asset('assets/js/form-validator.min.js')}}"></script>
 <script src="{{asset('assets/js/contact-form-script.js')}}"></script>
 <script src="{{asset('assets/js/custom.js')}}"></script>
+<script type="application/javascript">
+    function updateCartTutorial(id,idp) {
+        let qte = $('#'+id).val();
+        $.ajax(
+            {
+                url:'http://127.0.0.1:8000/panier/updateTutorialCart/'+parseInt(id)+"/"+parseInt(qte)+"/"+parseInt(idp),
+                type:"POST",
+                success: function (response) {
+                    window.location.href = "http://127.0.0.1:8000/panier";
+                }
+            }
+        )
+
+
+    }
+    function updateCartFormation(id,idp) {
+        var qte = $('#'+id).val();
+
+
+        $.ajax({
+            url:'http://127.0.0.1:8000/panier/updateFormationCart/'+parseInt(id)+"/"+parseInt(qte)+"/"+parseInt(idp),
+            type:'POST',
+            success: function (response) {
+                window.location.href = "http://127.0.0.1:8000/panier";
+
+            }
+        })
+
+
+    }
+</script>
 
 </body>
 </html>

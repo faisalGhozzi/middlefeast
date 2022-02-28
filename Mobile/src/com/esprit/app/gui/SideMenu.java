@@ -54,7 +54,13 @@ public abstract class SideMenu extends Form {
        
         //getToolbar().addCommandToSideMenu("  Speedometer", null,  e-> new SpeedometerForm(this, res).show());
         getToolbar().addCommandToSideMenu("  Logout", null,  e -> new SignInForm(res).show());
-        getToolbar().addCommandToSideMenu("  Tutorials", null, e -> new CourseForm(res).show());
+        getToolbar().addCommandToSideMenu("  Courses", null, e -> {
+            try {
+                new CourseForm(this, res).show();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
         /*getToolbar().addCommandToSideMenu("  Wishlist", null,  e -> new WishlistForm(res).show());
         getToolbar().addCommandToSideMenu("  Cart", null,  e -> new PanierForm(res).show());
         getToolbar().addCommandToSideMenu("  My Orders", null,  e -> new CommandeForm(res).show());

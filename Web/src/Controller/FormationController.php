@@ -62,6 +62,20 @@ class FormationController extends AbstractController
     // JSON RESPONSES
 
     /**
+     * @Route("/json", name="FormationJsonAction")
+     * @throws ExceptionInterface
+     */
+    public function formationJsonAction(): JsonResponse
+    {
+        $formation = $this->getDoctrine()->getManager()
+            ->getRepository(Formation::class)->findAll();
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($formation);
+        return new JsonResponse($formatted);
+    }
+
+    /**
      * @Route("/json/new", name="newFormationJson")
      */
     public function newFormationJson(Request $request): JsonResponse
@@ -71,8 +85,8 @@ class FormationController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $formation->setPrice($request->get('price'));
-        $formation->setDateDebut($request->get('date_debut'));
-        $formation->setDateFin($request->get('date_fin'));
+        $formation->setDateDebut($request->get('dateDebut'));
+        $formation->setDateFin($request->get('dateFin'));
         $formation->setDescription($request->get('description'));
         $formation->setDuree($request->get('duree'));
         $formation->setMode($request->get('mode'));
@@ -84,20 +98,6 @@ class FormationController extends AbstractController
     }
 
     /**
-     * @Route("/json", name="FormationJson")
-     * @throws ExceptionInterface
-     */
-    public function formationJson(): JsonResponse
-    {
-        $formation = $this->getDoctrine()->getManager()
-            ->getRepository(Formation::class)->findAll();
-
-        $serializer = new Serializer([new ObjectNormalizer()]);
-        $formatted = $serializer->normalize($formation);
-        return new JsonResponse($formatted);
-    }
-
-    /**
      * @Route("/json/update/{id}", name="updateFormationJson")
      */
     public function updateFormationJson(Request $request, $id): JsonResponse
@@ -106,8 +106,8 @@ class FormationController extends AbstractController
 
         $formation = $em->getRepository(Formation::class)->find($id);
 
-        $formation->setDateDebut($request->get("date_debut"));
-        $formation->setDateFin($request->get("date_fin"));
+        $formation->setDateDebut($request->get("dateDebut"));
+        $formation->setDateFin($request->get("dateFin"));
         $formation->setDescription($request->get("description"));
         $formation->setDuree($request->get("duree"));
         $formation->setMode($request->get("mode"));

@@ -5,23 +5,18 @@
  */
 package com.esprit.app.entity;
 
-import java.time.LocalDateTime;
 
-/**
- *
- * @author Faycal Ghozzi
- */
 public class Tutorial {
     private int id;
     private String video;
     private String image;
-    private LocalDateTime dateTuto;
+    private String dateTuto;
     private String category;
     private String titre;
     private String description;
     private String prix;
 
-    public Tutorial(int id, String video, String image, LocalDateTime dateTuto, String category, String titre, String description, String prix) {
+    public Tutorial(int id, String video, String image, String dateTuto, String category, String titre, String description, String prix) {
         this.id = id;
         this.video = video;
         this.image = image;
@@ -32,7 +27,7 @@ public class Tutorial {
         this.prix = prix;
     }
 
-    public Tutorial(String video, String image, LocalDateTime dateTuto, String category, String titre, String description, String prix) {
+    public Tutorial(String video, String image, String dateTuto, String category, String titre, String description, String prix) {
         this.video = video;
         this.image = image;
         this.dateTuto = dateTuto;
@@ -66,11 +61,11 @@ public class Tutorial {
         this.image = image;
     }
 
-    public LocalDateTime getDateTuto() {
+    public String getDateTuto() {
         return dateTuto;
     }
 
-    public void setDateTuto(LocalDateTime dateTuto) {
+    public void setDateTuto(String dateTuto) {
         this.dateTuto = dateTuto;
     }
 

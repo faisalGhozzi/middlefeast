@@ -5,7 +5,6 @@
  */
 package com.esprit.app.entity;
 
-import java.time.LocalDateTime;
 
 /**
  *
@@ -15,12 +14,14 @@ public class Course {
     private int id;
     private int price;
     private String mode;
-    private LocalDateTime dateDebut;
-    private LocalDateTime dateFin;
+    private String dateDebut;
+    private String dateFin;
     private String duree;
     private String description;
+    
+    public Course(){}
 
-    public Course(int id, int price, String mode, LocalDateTime dateDebut, LocalDateTime dateFin, String duree, String description) {
+    public Course(int id, int price, String mode, String dateDebut, String dateFin, String duree, String description) {
         this.id = id;
         this.price = price;
         this.mode = mode;
@@ -30,7 +31,7 @@ public class Course {
         this.description = description;
     }
 
-    public Course(int price, String mode, LocalDateTime dateDebut, LocalDateTime dateFin, String duree, String description) {
+    public Course(int price, String mode, String dateDebut, String dateFin, String duree, String description) {
         this.price = price;
         this.mode = mode;
         this.dateDebut = dateDebut;
@@ -63,19 +64,19 @@ public class Course {
         this.mode = mode;
     }
 
-    public LocalDateTime getDateDebut() {
+    public String getDateDebut() {
         return dateDebut;
     }
 
-    public void setDateDebut(LocalDateTime dateDebut) {
+    public void setDateDebut(String dateDebut) {
         this.dateDebut = dateDebut;
     }
 
-    public LocalDateTime getDateFin() {
+    public String getDateFin() {
         return dateFin;
     }
 
-    public void setDateFin(LocalDateTime dateFin) {
+    public void setDateFin(String dateFin) {
         this.dateFin = dateFin;
     }
 

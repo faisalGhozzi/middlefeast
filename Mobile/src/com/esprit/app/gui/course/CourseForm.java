@@ -5,8 +5,51 @@
  */
 package com.esprit.app.gui.course;
 
+import com.codename1.components.MultiButton;
+import com.codename1.ui.Container;
 import com.codename1.ui.Form;
+import com.codename1.ui.layouts.BoxLayout;
+import com.codename1.ui.layouts.GridLayout;
+import com.codename1.ui.util.Resources;
+import com.esprit.app.entity.Course;
+import com.esprit.app.services.CourseService;
+import java.io.IOException;
+import java.util.ArrayList;
 
 public class CourseForm extends Form{
+    public ArrayList<Course> courses;
+    @SuppressWarnings("unused")
+    private Resources theme;
+    
+    public CourseForm(Form previous, Resources res)throws IOException{
+        super("Courses List", GridLayout.autoFit());
+        this.theme = theme;
+        
+        courses = new CourseService().getAllCourses();
+		//this.add(new SpanLabel(new ProduitsService().getAllProducts().toString()));
+		Container list = new Container(BoxLayout.y());
+                list.setScrollableY(true);
+                for (Course course : courses) {
+                    MultiButton mb = new MultiButton(course.getDescription());
+                    mb.setTextLine2(course.getPrice() > 0 ? String.valueOf(course.getPrice()) + " TND" : "FREE");
+                    /*mb.addActionListener((evt) -> {
+                        new CourseDetailsForm(this, theme, course).show();
+                    });*/
+                    list.add(mb);
+                    /*img.addPointerReleasedListener((evt)->{
+                           new ProductDetailsForm(this, theme,prod.getId()).show();
+
+                   });		*/
+		}
+		this.getToolbar().addCommandToLeftBar("Return", null, (evt) -> {
+                    previous.showBack();
+                });
+                this.add(list);
+        
+    }
+
+    public CourseForm(Resources res) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

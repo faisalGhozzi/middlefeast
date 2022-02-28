@@ -9,9 +9,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 
 /**
@@ -32,6 +36,95 @@ class TutorialController extends AbstractController
         return $this->render('tutorial/index.html.twig', [
             'tutorials' => $tutorialRepository->findAll(),
         ]);
+    }
+
+    // JSON RESPONSES
+
+    /**
+     * @Route("/json/new", name="newTutoJson")
+     */
+    public function newTutoJson(Request $request): JsonResponse
+    {
+        $tutorial = new Tutorial();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $tutorial->setDescription($request->get('description'));
+        $tutorial->setCategory($request->get('category'));
+        $tutorial->setDateTuto($request->get('date_tuto'));
+        $tutorial->setImage($request->get('image'));
+        $tutorial->setVideo($request->get('video'));
+        $tutorial->setPrix($request->get('prix'));
+        $tutorial->setTitre($request->get('titre'));
+
+        $em->persist($tutorial);
+        $em->flush();
+
+        return new JsonResponse($tutorial);
+    }
+
+    /**
+     * @Route("/json", name="TutoJson")
+     * @throws ExceptionInterface
+     */
+    public function tutoJson(): JsonResponse
+    {
+        $tutorial = $this->getDoctrine()->getManager()
+            ->getRepository(Tutorial::class)->findAll();
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($tutorial);
+        return new JsonResponse($formatted);
+    }
+
+    /**
+     * @Route("/json/update/{id}", name="updateTutoJson")
+     */
+    public function updateTutoJson(Request $request, $id): JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $tutorial = $em->getRepository(Tutorial::class)->find($id);
+
+        $tutorial->setDescription($request->get('description'));
+        $tutorial->setCategory($request->get('category'));
+        $tutorial->setDateTuto($request->get('date_tuto'));
+        $tutorial->setImage($request->get('image'));
+        $tutorial->setVideo($request->get('video'));
+        $tutorial->setPrix($request->get('prix'));
+        $tutorial->setTitre($request->get('titre'));
+
+        $em->flush();
+
+        return new JsonResponse($tutorial);
+    }
+
+    /**
+     * @Route("/json/{id}", name="TutoIdJson")
+     * @throws ExceptionInterface
+     */
+    public function tutoIdJson($id): JsonResponse
+    {
+        $tutorial = $this->getDoctrine()->getManager()
+            ->getRepository(Tutorial::class)->find($id);
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($tutorial);
+        return new JsonResponse($formatted);
+    }
+
+    /**
+     * @Route("/json/delete/{id}", name="deleteTutoJson")
+     */
+    public function deleteTutoJson($id): JsonResponse
+    {
+        $tutorial = $this->getDoctrine()
+            ->getRepository(Tutorial::class)->find($id);
+        $this->getDoctrine()->getManager()->remove($tutorial);
+        $this->getDoctrine()->getManager()->flush();
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($tutorial);
+        return new JsonResponse($formatted);
     }
 
 

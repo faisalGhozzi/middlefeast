@@ -7,9 +7,13 @@ use App\Form\FormationFormType;
 use App\Repository\FormationRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * Class FormationController
@@ -53,6 +57,94 @@ class FormationController extends AbstractController
             'formation' => $formation,
             'form' => $form->createView(),
         ]);
+    }
+
+    // JSON RESPONSES
+
+    /**
+     * @Route("/json/new", name="newFormationJson")
+     */
+    public function newFormationJson(Request $request): JsonResponse
+    {
+        $formation = new Formation();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $formation->setPrice($request->get('price'));
+        $formation->setDateDebut($request->get('date_debut'));
+        $formation->setDateFin($request->get('date_fin'));
+        $formation->setDescription($request->get('description'));
+        $formation->setDuree($request->get('duree'));
+        $formation->setMode($request->get('mode'));
+
+        $em->persist($formation);
+        $em->flush();
+
+        return new JsonResponse($formation);
+    }
+
+    /**
+     * @Route("/json", name="FormationJson")
+     * @throws ExceptionInterface
+     */
+    public function formationJson(): JsonResponse
+    {
+        $formation = $this->getDoctrine()->getManager()
+            ->getRepository(Formation::class)->findAll();
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($formation);
+        return new JsonResponse($formatted);
+    }
+
+    /**
+     * @Route("/json/update/{id}", name="updateFormationJson")
+     */
+    public function updateFormationJson(Request $request, $id): JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $formation = $em->getRepository(Formation::class)->find($id);
+
+        $formation->setDateDebut($request->get("date_debut"));
+        $formation->setDateFin($request->get("date_fin"));
+        $formation->setDescription($request->get("description"));
+        $formation->setDuree($request->get("duree"));
+        $formation->setMode($request->get("mode"));
+        $formation->setPrice($request->get("price"));
+
+        $em->flush();
+
+        return new JsonResponse($formation);
+    }
+
+    /**
+     * @Route("/json/{id}", name="FormationIdJson")
+     * @throws ExceptionInterface
+     */
+    public function formationIdJson($id): JsonResponse
+    {
+        $formation = $this->getDoctrine()->getManager()
+            ->getRepository(Formation::class)->find($id);
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($formation);
+        return new JsonResponse($formatted);
+    }
+
+    /**
+     * @Route("/json/delete/{id}", name="deleteFormationJsonAction")
+     * @throws ExceptionInterface
+     */
+    public function deleteFormationJsonAction($id): JsonResponse
+    {
+        $formation = $this->getDoctrine()
+            ->getRepository(Formation::class)->find($id);
+        $this->getDoctrine()->getManager()->remove($formation);
+        $this->getDoctrine()->getManager()->flush();
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($formation);
+        return new JsonResponse($formatted);
     }
 
     /**

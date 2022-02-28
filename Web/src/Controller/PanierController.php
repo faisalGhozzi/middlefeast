@@ -15,6 +15,9 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * @Route("/panier")
@@ -39,6 +42,115 @@ class PanierController extends AbstractController
 
         }
 
+    }
+
+    // JSON RESPONSES
+
+    /**
+     * @Route("/json", name="PanierJson")
+     * @throws ExceptionInterface
+     */
+    public function formationJson(): JsonResponse
+    {
+        $formation = $this->getDoctrine()->getManager()
+            ->getRepository(Formation::class)->findAll();
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($formation);
+        return new JsonResponse($formatted);
+    }
+
+    /**
+     * @Route("/json/addTuto", name="addTutoPanierJson")
+     */
+    public function addTutoPanierJson(Request $request): JsonResponse
+    {
+        $formation = new Formation();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $formation->setPrice($request->get('price'));
+        $formation->setDateDebut($request->get('date_debut'));
+        $formation->setDateFin($request->get('date_fin'));
+        $formation->setDescription($request->get('description'));
+        $formation->setDuree($request->get('duree'));
+        $formation->setMode($request->get('mode'));
+
+        $em->persist($formation);
+        $em->flush();
+
+        return new JsonResponse($formation);
+    }
+
+    /**
+     * @Route("/json/addFormation", name="addFormationPanierJson")
+     */
+    public function addFormationPanierJson(Request $request): JsonResponse
+    {
+        $formation = new Formation();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $formation->setPrice($request->get('price'));
+        $formation->setDateDebut($request->get('date_debut'));
+        $formation->setDateFin($request->get('date_fin'));
+        $formation->setDescription($request->get('description'));
+        $formation->setDuree($request->get('duree'));
+        $formation->setMode($request->get('mode'));
+
+        $em->persist($formation);
+        $em->flush();
+
+        return new JsonResponse($formation);
+    }
+
+    /**
+     * @Route("/json/update/{id}", name="updatePanierJson")
+     */
+    public function updateFormationJson(Request $request, $id): JsonResponse
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $formation = $em->getRepository(Formation::class)->find($id);
+
+        $formation->setDateDebut($request->get("date_debut"));
+        $formation->setDateFin($request->get("date_fin"));
+        $formation->setDescription($request->get("description"));
+        $formation->setDuree($request->get("duree"));
+        $formation->setMode($request->get("mode"));
+        $formation->setPrice($request->get("price"));
+
+        $em->flush();
+
+        return new JsonResponse($formation);
+    }
+
+    /**
+     * @Route("/json/{id}", name="PanierOneJson")
+     * @throws ExceptionInterface
+     */
+    public function formationIdJson($id): JsonResponse
+    {
+        $formation = $this->getDoctrine()->getManager()
+            ->getRepository(Formation::class)->find($id);
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($formation);
+        return new JsonResponse($formatted);
+    }
+
+    /**
+     * @Route("/json/delete/{id}", name="deletePanierJson")
+     */
+    public function deleteFormationJson($id)
+    {
+        $formation = $this->getDoctrine()
+            ->getRepository(Formation::class)->find($id);
+        $this->getDoctrine()->getManager()->remove($formation);
+        $this->getDoctrine()->getManager()->flush();
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($formation);
+        return new JsonResponse($formatted);
     }
 
 
@@ -123,7 +235,6 @@ class PanierController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="panier_delete")
-
      * @param EntityManagerInterface $entityManager
      * @return Response
      */

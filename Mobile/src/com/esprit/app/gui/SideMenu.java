@@ -8,6 +8,7 @@ import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.util.Resources;
 import com.esprit.app.gui.course.CourseForm;
 import com.esprit.app.gui.tutorial.TutorialForm;
+import com.esprit.app.gui.user.UserForm;
 
 public abstract class SideMenu extends Form {
     public SideMenu(String title, Layout contentPaneLayout) {
@@ -68,7 +69,13 @@ public abstract class SideMenu extends Form {
                 ex.printStackTrace();
             }
         });
-
+        getToolbar().addCommandToSideMenu("  Users", null, e -> {
+            try {
+                new UserForm(this, res).show();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
         getToolbar().addCommandToSideMenu("  Logout", null,  e -> new SignInForm(res).show());
         /*getToolbar().addCommandToSideMenu("  Wishlist", null,  e -> new WishlistForm(res).show());
         getToolbar().addCommandToSideMenu("  Cart", null,  e -> new PanierForm(res).show());

@@ -32,14 +32,10 @@ public class CourseForm extends Form{
                 for (Course course : courses) {
                     MultiButton mb = new MultiButton(course.getDescription());
                     mb.setTextLine2(course.getPrice() > 0 ? String.valueOf(course.getPrice()) + " TND" : "FREE");
-                    /*mb.addActionListener((evt) -> {
-                        new CourseDetailsForm(this, theme, course).show();
-                    });*/
+                    mb.addActionListener((evt) -> {
+                        new ShowCourseForm(this, theme, course.getId()).show();
+                    });
                     list.add(mb);
-                    /*img.addPointerReleasedListener((evt)->{
-                           new ProductDetailsForm(this, theme,prod.getId()).show();
-
-                   });		*/
 		}
 		this.getToolbar().addCommandToLeftBar("Return", null, (evt) -> {
                     previous.showBack();

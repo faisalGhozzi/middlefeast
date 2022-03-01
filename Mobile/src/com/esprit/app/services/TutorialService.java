@@ -13,7 +13,6 @@ import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
 import com.codename1.ui.Dialog;
 import com.codename1.ui.events.ActionListener;
-import com.esprit.app.entity.Course;
 import com.esprit.app.entity.Tutorial;
 import com.esprit.app.utils.DataSource;
 import com.esprit.app.utils.Statics;
@@ -27,6 +26,7 @@ public class TutorialService {
 
     public static CourseService instance = null;
     public boolean resultOk;
+    private Tutorial tutorialclass = new Tutorial();
     private ConnectionRequest req;
 
     public TutorialService() {
@@ -59,7 +59,7 @@ public class TutorialService {
         return resultOk;
     }
 
-    public ArrayList<Tutorial> parseTutorial(String jsonText) throws IOException{
+    public ArrayList<Tutorial> parseTutorials(String jsonText) throws IOException{
         tutorial = new ArrayList<>();
         JSONParser j = new JSONParser();
         Map<String,Object> tutorialsListJson = j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
@@ -86,6 +86,31 @@ public class TutorialService {
         }
         return tutorial;
     }
+    
+    public Tutorial parseTutorial(String jsonText) throws IOException{
+        tutorial = new ArrayList<>();
+        JSONParser j = new JSONParser();
+        Map<String,Object> tutorialsListJson = j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
+        Tutorial t = new Tutorial();
+        int id = (int)Float.parseFloat(tutorialsListJson.get("id").toString());
+        t.setId(id);
+        String category = tutorialsListJson.get("category").toString();
+        t.setCategory(category);
+        String image = tutorialsListJson.get("image").toString();
+        t.setImage(image);
+        String date_tuto = tutorialsListJson.get("dateTuto").toString();
+        t.setDateTuto(date_tuto);
+        String titre = tutorialsListJson.get("titre").toString();
+        t.setTitre(titre);
+        String video = tutorialsListJson.get("video").toString();
+        t.setVideo(video);
+        String description = tutorialsListJson.get("description").toString();
+        t.setDescription(description);
+        double prix = Double.parseDouble(tutorialsListJson.get("prix").toString());
+        t.setPrix(prix);
+        tutorial.add(t);
+        return t;
+    }
 
     public ArrayList<Tutorial> getAllTutorials(){
         String url = Statics.BASE_URL+"/tutorial/json";
@@ -99,7 +124,7 @@ public class TutorialService {
             @Override
             public void actionPerformed(NetworkEvent evt) {
                 try{
-                    tutorial = parseTutorial(new String(req.getResponseData()));
+                    tutorial = parseTutorials(new String(req.getResponseData()));
                 }catch(IOException ex){
                     ex.printStackTrace();
                 }
@@ -109,8 +134,31 @@ public class TutorialService {
         NetworkManager.getInstance().addToQueueAndWait(req);
         return tutorial;
     }
+    
+    public Tutorial getTutorial(int id){
+        String url = Statics.BASE_URL+"/tutorial/json/"+id;
+        req.removeAllArguments();
+        req.setUrl(url);
+        req.setPost(false);
+        InfiniteProgress prog = new InfiniteProgress();
+        Dialog d = prog.showInfiniteBlocking();
+        req.setDisposeOnCompletion(d);
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                try{
+                    tutorialclass = parseTutorial(new String(req.getResponseData()));
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return tutorialclass;
+    }
 
-    public boolean deleteCourse(int id){
+    public boolean deleteTutorial(int id){
         String url = Statics.BASE_URL+"/tutorial/json/delete/"+id;
         req.setUrl(url);
         InfiniteProgress prog = new InfiniteProgress();

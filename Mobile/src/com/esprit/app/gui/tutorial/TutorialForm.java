@@ -39,9 +39,9 @@ public class TutorialForm extends Form{
                     Image i = URLImage.createToStorage(placeholder,tutorial.getImage(),Statics.BASE_URL+"/uploads/"+tutorial.getImage());
                     mb.setIcon(i.fill(200, 200));
                     mb.setTextLine2(tutorial.getPrix() > 0 ? String.valueOf(tutorial.getPrix()) + " TND" : "FREE");
-                    /*mb.addActionListener((evt) -> {
-                        new CourseDetailsForm(this, theme, course).show();
-                    });*/
+                    mb.addActionListener((evt) -> {
+                        new ShowTutorialForm(this, theme, tutorial.getId()).show();
+                    });
                     list.add(mb);
                     /*img.addPointerReleasedListener((evt)->{
                            new ProductDetailsForm(this, theme,prod.getId()).show();

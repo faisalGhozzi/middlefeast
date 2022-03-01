@@ -13,6 +13,7 @@ import com.codename1.ui.Toolbar;
 // import java.io.IOException;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.io.NetworkEvent;
+import com.esprit.app.gui.HomeForm;
 import com.esprit.app.gui.SignInForm;
 
 /**
@@ -48,7 +49,8 @@ public class MyApplication {
     }
     
     public void start() {
-        new SignInForm(theme).show();
+        new HomeForm(theme).show();
+        //new SignInForm(theme).show();
     }
 
     public void stop() {

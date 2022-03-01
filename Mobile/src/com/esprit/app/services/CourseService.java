@@ -26,6 +26,7 @@ public class CourseService {
 
     public static CourseService instance = null;
     public boolean resultOk;
+    public Course courseclass = new Course();
     private ConnectionRequest req;
 
     public CourseService() {
@@ -56,7 +57,7 @@ public class CourseService {
         return resultOk;
     }
 
-    public ArrayList<Course> parseCourse(String jsonText) throws IOException{
+    public ArrayList<Course> parseCourses(String jsonText) throws IOException{
         course = new ArrayList<>();
         JSONParser j = new JSONParser();
         Map<String,Object> coursesListJson = j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
@@ -81,6 +82,29 @@ public class CourseService {
         }
         return course;
     }
+    
+    public Course parseCourse(String jsonText) throws IOException{
+        course = new ArrayList<>();
+        JSONParser j = new JSONParser();
+        Map<String,Object> coursesListJson = j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
+        Course c = new Course();
+        int id = (int)Float.parseFloat(coursesListJson.get("id").toString());
+        c.setId(id);
+        int price = (int)Float.parseFloat(coursesListJson.get("price").toString());
+        c.setPrice(price);
+        String dateDebut = coursesListJson.get("dateDebut").toString();
+        c.setDateDebut(dateDebut);
+        String dateFin = coursesListJson.get("dateFin").toString();
+        c.setDateDebut(dateFin);
+        String duree = coursesListJson.get("duree").toString();
+        c.setDuree(duree);
+        String description = coursesListJson.get("description").toString();
+        c.setDescription(description);
+        String mode = coursesListJson.get("mode").toString();
+        c.setMode(mode);
+        course.add(c);
+        return c;
+    }
 
     public ArrayList<Course> getAllCourses(){
         String url = Statics.BASE_URL+"/formation/json";
@@ -94,7 +118,7 @@ public class CourseService {
             @Override
             public void actionPerformed(NetworkEvent evt) {
                 try{
-                    course = parseCourse(new String(req.getResponseData()));
+                    course = parseCourses(new String(req.getResponseData()));
                 }catch(IOException ex){
                     ex.printStackTrace();
                 }
@@ -103,6 +127,29 @@ public class CourseService {
         });
         NetworkManager.getInstance().addToQueueAndWait(req);
         return course;
+    }
+    
+    public Course findCourse(int id){
+        String url = Statics.BASE_URL+"/formation/json/"+id;
+        req.removeAllArguments();
+        req.setUrl(url);
+        req.setPost(false);
+        InfiniteProgress prog = new InfiniteProgress();
+        Dialog d = prog.showInfiniteBlocking();
+        req.setDisposeOnCompletion(d);
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                try{
+                    courseclass = parseCourse(new String(req.getResponseData()));
+                }catch(IOException ex){
+                    ex.printStackTrace();
+                }
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return courseclass;
     }
 
     public boolean deleteCourse(int id){

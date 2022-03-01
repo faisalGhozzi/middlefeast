@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\EditProfileType;
+use App\Entity\User;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,87 +32,81 @@ class UserController extends AbstractController
     // JSON RESPONSES
 
     /**
-     * @Route("/json/new", name="newFormationJson")
+     * @Route("/json/new", name="newUserJsonAction")
      */
-    public function newFormationJson(Request $request): JsonResponse
+    public function newUserJsonAction(Request $request, UserPasswordEncoderInterface $passwordEncoder): JsonResponse
     {
-        $formation = new Formation();
+        $user = new User();
 
         $em = $this->getDoctrine()->getManager();
 
-        $formation->setPrice($request->get('price'));
-        $formation->setDateDebut($request->get('date_debut'));
-        $formation->setDateFin($request->get('date_fin'));
-        $formation->setDescription($request->get('description'));
-        $formation->setDuree($request->get('duree'));
-        $formation->setMode($request->get('mode'));
-
-        $em->persist($formation);
-        $em->flush();
-
-        return new JsonResponse($formation);
+        if($request->get('pass') == $request->get('pass2')){
+            $user->setEmail($request->get('email'));
+            $user->setFirstname($request->get('firstname'));
+            $user->setLastname($request->get('lastname'));
+            $user->setIsVerified(1);
+            $user->setPassword($passwordEncoder->encodePassword($user, $request->get('pass')));
+            $em->flush();
+            $em->persist($formation);
+            $em->flush();
+            return new JsonResponse($user);
+            }
+        return new JsonResponse();
     }
 
     /**
-     * @Route("/json", name="FormationJson")
+     * @Route("/json", name="UserJsonAction")
      * @throws ExceptionInterface
      */
-    public function formationJson(): JsonResponse
+    public function userJsonAction(): JsonResponse
     {
-        $formation = $this->getDoctrine()->getManager()
-            ->getRepository(Formation::class)->findAll();
+        $user = $this->getDoctrine()->getManager()
+            ->getRepository(User::class)->findAll();
 
         $serializer = new Serializer([new ObjectNormalizer()]);
-        $formatted = $serializer->normalize($formation);
+        $formatted = $serializer->normalize($user);
         return new JsonResponse($formatted);
     }
 
-    /**
-     * @Route("/json/update/{id}", name="updateFormationJson")
-     */
-    public function updateFormationJson(Request $request, $id): JsonResponse
-    {
-        $em = $this->getDoctrine()->getManager();
+    // public function updateFormationJson(Request $request, $id): JsonResponse
+    // {
+    //     $em = $this->getDoctrine()->getManager();
 
-        $formation = $em->getRepository(Formation::class)->find($id);
+    //     $formation = $em->getRepository(Formation::class)->find($id);
 
-        $formation->setDateDebut($request->get("date_debut"));
-        $formation->setDateFin($request->get("date_fin"));
-        $formation->setDescription($request->get("description"));
-        $formation->setDuree($request->get("duree"));
-        $formation->setMode($request->get("mode"));
-        $formation->setPrice($request->get("price"));
+    //     $formation->setDateDebut($request->get("date_debut"));
+    //     $formation->setDateFin($request->get("date_fin"));
+    //     $formation->setDescription($request->get("description"));
+    //     $formation->setDuree($request->get("duree"));
+    //     $formation->setMode($request->get("mode"));
+    //     $formation->setPrice($request->get("price"));
 
-        $em->flush();
+    //     $em->flush();
 
-        return new JsonResponse($formation);
-    }
+    //     return new JsonResponse($formation);
+    // }
 
-    /**
-     * @Route("/json/{id}", name="FormationIdJson")
-     * @throws ExceptionInterface
-     */
-    public function formationIdJson($id): JsonResponse
-    {
-        $formation = $this->getDoctrine()->getManager()
-            ->getRepository(Formation::class)->find($id);
+    // public function formationIdJson($id): JsonResponse
+    // {
+    //     $formation = $this->getDoctrine()->getManager()
+    //         ->getRepository(Formation::class)->find($id);
 
-        $serializer = new Serializer([new ObjectNormalizer()]);
-        $formatted = $serializer->normalize($formation);
-        return new JsonResponse($formatted);
-    }
+    //     $serializer = new Serializer([new ObjectNormalizer()]);
+    //     $formatted = $serializer->normalize($formation);
+    //     return new JsonResponse($formatted);
+    // }
 
     /**
-     * @Route("/json/delete/{id}", name="deleteFormationJson")
+     * @Route("/json/delete/{id}", name="deleteUserJsonAction")
      */
-    public function deleteFormationJson($id)
+    public function deleteUserJsonAction($id)
     {
-        $formation = $this->getDoctrine()
-            ->getRepository(Formation::class)->find($id);
-        $this->getDoctrine()->getManager()->remove($formation);
+        $user = $this->getDoctrine()
+            ->getRepository(User::class)->find($id);
+        $this->getDoctrine()->getManager()->remove($user);
         $this->getDoctrine()->getManager()->flush();
         $serializer = new Serializer([new ObjectNormalizer()]);
-        $formatted = $serializer->normalize($formation);
+        $formatted = $serializer->normalize($user);
         return new JsonResponse($formatted);
     }
 

@@ -15,7 +15,10 @@ public class User {
     private String firstname;
     private String lastname;
     private boolean isVerified;
-
+    
+    public User(){
+    }
+    
     public User(int id, String email, List<String> roles, String password, String firstname, String lastname, boolean isVerified) {
         this.id = id;
         this.email = email;
@@ -52,6 +55,9 @@ public class User {
     }
 
     public List<String> getRoles() {
+        if(roles.isEmpty()){
+            roles.add("ROLE_USER");
+        }
         return roles;
     }
 
@@ -83,7 +89,7 @@ public class User {
         this.lastname = lastname;
     }
 
-    public boolean isIsVerified() {
+    public boolean getIsVerified() {
         return isVerified;
     }
 

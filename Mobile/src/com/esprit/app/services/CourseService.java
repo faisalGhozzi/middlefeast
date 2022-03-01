@@ -95,7 +95,6 @@ public class CourseService {
             public void actionPerformed(NetworkEvent evt) {
                 try{
                     course = parseCourse(new String(req.getResponseData()));
-                    System.out.println(course);
                 }catch(IOException ex){
                     ex.printStackTrace();
                 }

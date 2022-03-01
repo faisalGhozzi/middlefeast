@@ -14,9 +14,9 @@ public class Tutorial {
     private String category;
     private String titre;
     private String description;
-    private String prix;
+    private double prix;
 
-    public Tutorial(int id, String video, String image, String dateTuto, String category, String titre, String description, String prix) {
+    public Tutorial(int id, String video, String image, String dateTuto, String category, String titre, String description, double prix) {
         this.id = id;
         this.video = video;
         this.image = image;
@@ -27,7 +27,7 @@ public class Tutorial {
         this.prix = prix;
     }
 
-    public Tutorial(String video, String image, String dateTuto, String category, String titre, String description, String prix) {
+    public Tutorial(String video, String image, String dateTuto, String category, String titre, String description, double prix) {
         this.video = video;
         this.image = image;
         this.dateTuto = dateTuto;
@@ -35,6 +35,9 @@ public class Tutorial {
         this.titre = titre;
         this.description = description;
         this.prix = prix;
+    }
+
+    public Tutorial() {
     }
 
     public int getId() {
@@ -93,11 +96,11 @@ public class Tutorial {
         this.description = description;
     }
 
-    public String getPrix() {
+    public double getPrix() {
         return prix;
     }
 
-    public void setPrix(String prix) {
+    public void setPrix(double prix) {
         this.prix = prix;
     }
     

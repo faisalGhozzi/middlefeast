@@ -51,7 +51,7 @@ class TutorialController extends AbstractController
 
         $tutorial->setDescription($request->get('description'));
         $tutorial->setCategory($request->get('category'));
-        $tutorial->setDateTuto($request->get('date_tuto'));
+        $tutorial->setDateTuto($request->get('dateTuto'));
         $tutorial->setImage($request->get('image'));
         $tutorial->setVideo($request->get('video'));
         $tutorial->setPrix($request->get('prix'));
@@ -88,7 +88,7 @@ class TutorialController extends AbstractController
 
         $tutorial->setDescription($request->get('description'));
         $tutorial->setCategory($request->get('category'));
-        $tutorial->setDateTuto($request->get('date_tuto'));
+        $tutorial->setDateTuto($request->get('dateTuto'));
         $tutorial->setImage($request->get('image'));
         $tutorial->setVideo($request->get('video'));
         $tutorial->setPrix($request->get('prix'));

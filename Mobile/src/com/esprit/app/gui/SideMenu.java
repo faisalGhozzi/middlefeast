@@ -7,6 +7,7 @@ import com.codename1.ui.layouts.BorderLayout;
 import com.codename1.ui.layouts.Layout;
 import com.codename1.ui.util.Resources;
 import com.esprit.app.gui.course.CourseForm;
+import com.esprit.app.gui.tutorial.TutorialForm;
 
 public abstract class SideMenu extends Form {
     public SideMenu(String title, Layout contentPaneLayout) {
@@ -53,7 +54,6 @@ public abstract class SideMenu extends Form {
 		});*/
        
         //getToolbar().addCommandToSideMenu("  Speedometer", null,  e-> new SpeedometerForm(this, res).show());
-        getToolbar().addCommandToSideMenu("  Logout", null,  e -> new SignInForm(res).show());
         getToolbar().addCommandToSideMenu("  Courses", null, e -> {
             try {
                 new CourseForm(this, res).show();
@@ -61,6 +61,15 @@ public abstract class SideMenu extends Form {
                 ex.printStackTrace();
             }
         });
+        getToolbar().addCommandToSideMenu("  Tutorials", null, e -> {
+            try {
+                new TutorialForm(this, res).show();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        getToolbar().addCommandToSideMenu("  Logout", null,  e -> new SignInForm(res).show());
         /*getToolbar().addCommandToSideMenu("  Wishlist", null,  e -> new WishlistForm(res).show());
         getToolbar().addCommandToSideMenu("  Cart", null,  e -> new PanierForm(res).show());
         getToolbar().addCommandToSideMenu("  My Orders", null,  e -> new CommandeForm(res).show());

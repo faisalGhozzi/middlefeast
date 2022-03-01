@@ -46,10 +46,5 @@ public class CourseForm extends Form{
                 });
                 this.add(list);
         
-    }
-
-    public CourseForm(Resources res) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+    }    
 }

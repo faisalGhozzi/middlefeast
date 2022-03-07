@@ -40,14 +40,16 @@
                     {% if tutorial.category == "Starters" %}
 
                         <div class="col-lg-4 col-md-6 special-grid starters">
+                        <a href="{{ path('tutorial_show',{'id':tutorial.id}) }}">
                             <div class="gallery-single fix">
                                 <img src="{{ asset('uploads/'~ tutorial.image ) }}" class="img-fluid" alt="Image">
                                 <div class="why-text">
-                                    <a href="{{ path('tutorial_show',{'id':tutorial.id}) }}"><h4>{{ tutorial.titre }} </h4></a>
+                                    <h4>{{ tutorial.titre }} </h4>
                                     <p>{{ tutorial.description }}</p>
                                     <h5> {{ tutorial.prix }} DT</h5>
                                 </div>
                             </div>
+                        </a>
                         </div>
 
                     {% endif %}

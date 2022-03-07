@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Tutorial;
 use App\Form\TutorialFormType;
+use App\Repository\CommandeRepository;
 use App\Repository\TutorialRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,13 +38,17 @@ class TutorialController extends AbstractController
 
     /**
      * @Route("/{id}", name="tutorial_show", methods={"GET"})
+     * @param CommandeRepository $commandeRepository
      * @param Tutorial $tutorial
      * @return Response
      */
-    public function show(Tutorial $tutorial): Response
+    public function show(CommandeRepository $commandeRepository, Tutorial $tutorial): Response
     {
+        $commande = $commandeRepository->findOneBy(['user'=>$this->getUser()]);
+
         return $this->render('tutorial/show.html.twig', [
             'tutorial' => $tutorial,
+            'commande'=>$commande
         ]);
     }
 

@@ -41,7 +41,13 @@
                                             {% if(tutorial.prix == 0) %} Free {% else %} {{ tutorial.prix }} DT {% endif %}</span>
                                     </li>
                                     <li>
-                                        {% if(tutorial.prix != 0) %}  <a href="{{ path('add_tuto_cart',{'id':tutorial.id}) }}" class="btn btn-info"> Add to Cart</a>  {% endif %}
+                                        {% if(  commande|length == 0 ) %}
+                                            {% if(tutorial.prix != 0) %}  <a href="{{ path('add_tuto_cart',{'id':tutorial.id}) }}" class="btn btn-info"> Add to Cart</a>  {% endif %}
+
+                                        {% else %}
+                                            <button class="btn btn-success" disabled>Bought</button>
+                                        {% endif %}
+
 
                                     </li>
 
@@ -56,7 +62,17 @@
                                         Your browser does not support the video tag.
                                     </video>
                                         {% else %}
-                                        <p>This tutorial is Paid please proceed to payment before accessing it</p>
+                                            {% if(  commande|length == 0 ) %}
+                                                <p>This tutorial is Paid please proceed to payment before accessing it</p>
+
+                                            {% else %}
+                                                <video width="500" height="500"  controls >
+                                                    <source src="{{ asset('uploads/'~ tutorial.video ) }}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+
+
+                                            {% endif %}
                                     {% endif %}
                                 </blockquote>
                                 <hr>

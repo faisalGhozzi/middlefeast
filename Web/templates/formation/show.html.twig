@@ -35,10 +35,8 @@
                                             {% if(formation.price == 0) %} Free {% else %} {{ formation.price }} DT {% endif %}</span>
                                     </li>
                                     <li>
-                                        {% if(formation.price > 0) %}  <button class="btn btn-outline-info"> Add to Cart</button>  {% endif %}
-
+                                        {% if(formation.price != 0) %}  <a href="{{ path('add_formation_cart',{'id':formation.id}) }}" class="btn btn-info"> Add to Cart</a>  {% endif %}
                                     </li>
-
                                 </ul>
                                 <hr>
                                 <blockquote style="">
@@ -64,9 +62,6 @@
                                     </p>
                                 </blockquote>
                                 <hr>
-                                <blockquote style="">
-                                    {% if(formation.price != 0) %}  <a href="{{ path('add_formation_cart',{'id':formation.id}) }}" class="btn btn-info"> Add to Cart</a>  {% endif %}
-                                </blockquote>
                             </div>
                         </div>
 

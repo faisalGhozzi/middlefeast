@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Form\EditProfileType;
+use App\Repository\CommandeRepository;
 use phpDocumentor\Reflection\Types\This;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -75,4 +76,6 @@ class UserController extends AbstractController
 
         return $this->render('users/edit_password.html.twig');
     }
+
+
 }

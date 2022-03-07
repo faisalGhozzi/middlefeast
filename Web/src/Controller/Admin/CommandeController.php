@@ -24,20 +24,8 @@ class CommandeController extends AbstractController
      */
     public function index(CommandeRepository $commandeRepository, Request $request): Response
     {
-        $commandes = $commandeRepository->findAll();
-
-        $form = $this->createForm(SearchNameType::class);
-
-        $search = $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()){
-            $commandes = $commandeRepository->search($search->get('words')
-                ->getData());
-        }
-
         return $this->render('admin/commande/index.html.twig',[
-            'commandes' => $commandes,
-            'form' => $form->createView()
+            'commandes' => $commandeRepository->findAll(),
         ]);
     }
 }

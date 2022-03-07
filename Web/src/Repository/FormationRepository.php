@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\Formation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +19,19 @@ class FormationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Formation::class);
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     * @throws NoResultException
+     */
+    public function countFormation()
+    {
+        $count = $this->createQueryBuilder('f')
+            ->select('count(f.id) as count')
+            ->getQuery()
+            ->getSingleScalarResult();
+        return max($count, 0);
     }
 
     // /**

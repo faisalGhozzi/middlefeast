@@ -19,6 +19,15 @@ class TutorialRepository extends ServiceEntityRepository
         parent::__construct($registry, Tutorial::class);
     }
 
+    public function countTutorial()
+    {
+        $count = $this->createQueryBuilder('t')
+            ->select('count(t.id) as count')
+            ->getQuery()
+            ->getSingleScalarResult();
+        return max($count, 0);
+    }
+
     // /**
     //  * @return Tutorial[] Returns an array of Tutorial objects
     //  */

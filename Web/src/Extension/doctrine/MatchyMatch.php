@@ -1,14 +1,14 @@
 <?php
-namespace App\Extensions\Doctrine;
+namespace App\Extensions\doctrine;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode;
 use Doctrine\ORM\Query\Lexer;
 use Doctrine\ORM\Query\Parser;
 use Doctrine\ORM\Query\SqlWalker;
 
-class MatchAgainst extends FunctionNode
+class MatchyMatch extends FunctionNode
 {
-    /** @var array list of \Doctrine\ORM\Query\AST\PathExpression */
+    /** @var array list of \doctrine\ORM\Query\AST\PathExpression */
     protected $pathExp = null;
     /** @var string */
     protected $against = null;

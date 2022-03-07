@@ -61,7 +61,7 @@ class TutorialController extends AbstractController
 
                 try {
                     $videoFile->move(
-                        $this->getParameter('uploads_tutos'),
+                        $this->getParameter('uploads'),
                         $newFilename
                     );
                 } catch (FileException $e) {
@@ -76,7 +76,7 @@ class TutorialController extends AbstractController
 
                 try {
                     $imageFile->move(
-                        $this->getParameter('uploads_tutos'),
+                        $this->getParameter('uploads'),
                         $newFilename
                     );
                 } catch (FileException $e) {

@@ -36,10 +36,9 @@
                                                 <h3>Course :</h3> <h3>{{ item.formation.description }}</h3><br>
                                                 <h3>Price  :</h3> <h3>{{ item.formation.price }} DT</h3><br>
                                                 <label><h3>Quantity</h3></label>
-                                                <input class="form-control" id="{{ item.id }}"  type="number" value="{{ item.qte}}" min="1" >
+                                                <input class="form-control" onchange="updateCartFormation({{ item.id }},{{ item.formation.id }})" id="{{ item.id }}"  type="number" value="{{ item.qte}}" min="1" >
                                                 <hr>
                                                 <a class="btn btn-danger" href="{{ path('panier_delete',{'id':item.id}) }}">Delete Item</a>
-                                                <a class="btn btn-info" onclick="updateCartFormation({{ item.id }},{{ item.formation.id }})" href="javascript:void(0)">Update Item</a>
                                             </blockquote>
 
 
@@ -51,12 +50,9 @@
                                                 <h3>Tutorial Title : </h3> <h3>{{ item.tutorial.titre }}</h3><br>
                                                 <h3>Price  : </h3> <h3>{{ item.tutorial.prix }} DT</h3><br>
                                                 <label><h3>Quantity</h3></label>
-                                                <input class="form-control" id="{{ item.id }}" type="number" value="{{ item.qte}}" min="1"> <hr>
+                                                <input class="form-control" onchange="updateCartTutorial({{ item.id }},{{ item.tutorial.id }})" id="{{ item.id }}" type="number" value="{{ item.qte}}" min="1"> <hr>
 
                                                 <a class="btn btn-danger" href="{{ path('panier_delete',{'id':item.id}) }}">Delete Item</a>
-                                                <a class="btn btn-info" onclick="updateCartTutorial({{ item.id }},{{ item.tutorial.id }})" href="javascript:void(0)">Update Item</a>
-
-
                                             </blockquote>
 
                                     {% endif %}
@@ -67,7 +63,7 @@
                                    {% set total=total+item.total %}
                                 {% endfor %}
                                 <blockquote><p>Cart Total : {{ total }} DT</p></blockquote>
-                                <button class="btn btn-success" disabled>Checkout</button>
+                                <a class="btn btn-success" href="{{ path("checkout") }}">Checkout</a>
 
 
 

@@ -2,18 +2,31 @@
 
 namespace App\Controller;
 
+use App\Entity\Abonnement;
+use App\Entity\Commande;
 use App\Entity\Formation;
+use App\Entity\Library;
 use App\Entity\Panier;
 use App\Entity\Tutorial;
 use App\Entity\User;
 use App\Form\PanierType;
+use App\Repository\AbonnementRepository;
+use App\Repository\CommandeRepository;
 use App\Repository\PanierRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Stripe\Exception\ApiErrorException;
+use Stripe\PaymentIntent;
+use Stripe\Stripe;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -47,7 +60,7 @@ class PanierController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param $id
      * @return Response
-     * @Route("/addTuto/{id}",name="add_tuto_cart")
+     * @Route("/addTuto/{id}",name="add_tuto_cart",methods={"GET", "POST"})
      */
     public function createCartItemTutorial(Request $request,EntityManagerInterface $entityManager,$id):Response
     {
@@ -86,7 +99,7 @@ class PanierController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @param $id
      * @return Response
-     * @Route("/addFormation/{id}",name="add_formation_cart")
+     * @Route("/addFormation/{id}",name="add_formation_cart",methods={"GET", "POST"})
      */
     public function createCartItemFormation(Request $request,EntityManagerInterface $entityManager,$id):Response
     {
@@ -122,7 +135,7 @@ class PanierController extends AbstractController
 
 
     /**
-     * @Route("/delete/{id}", name="panier_delete")
+     * @Route("/delete/{id}", name="panier_delete",methods={"GET", "POST"})
 
      * @param EntityManagerInterface $entityManager
      * @return Response
@@ -185,5 +198,223 @@ class PanierController extends AbstractController
         }
         return $this->redirectToRoute('panier_index', [], Response::HTTP_SEE_OTHER);
 
+    }
+
+    /**
+     * @param CommandeRepository $commandeRepository
+     * @param UserRepository $userRepository
+     * @param PanierRepository $panierRepository
+     * @param EntityManagerInterface $entityManager
+     * @param MailerInterface $mailer
+     * @return Response
+     * @Route("/checkout",name="checkout")
+     * @throws TransportExceptionInterface
+     */
+    public function checkout(CommandeRepository $commandeRepository,UserRepository $userRepository, PanierRepository $panierRepository,EntityManagerInterface $entityManager,MailerInterface $mailer)
+    {
+        if($this->getUser()!=null)
+        {
+            $commande = new Commande();
+
+
+            $commande->setUser($userRepository->find($this->getUser()));
+            $commande->setDate(new \DateTime());
+            $commande->setEtat("Paid");
+
+
+            $products = $panierRepository->findBy(['user'=>$this->getUser()]);
+            $total = 0;
+
+            $librarytuto = new Library();
+            $libraryform = new Library();
+
+            foreach ($products as $p)
+            {
+
+                if($p->getFormation()->getId()!=null)
+                {
+                    $formation = $entityManager->getRepository(Formation::class)->find($p->getFormation()->getId());
+                    if($formation)
+                    {
+                        $libraryform->setUrl("http://127.0.0.1:8000/formation/".$p->getFormation()->getId());
+                        $libraryform->setUserid($this->getUser());
+                        $entityManager->persist($libraryform);
+                        $entityManager->flush();
+                    }
+                }
+
+                if($p->getTutorial()->getId()!=null)
+                {
+                    $tutorial = $entityManager->getRepository(Tutorial::class)->find($p->getTutorial()->getId());
+                    if($tutorial)
+                    {
+                        $librarytuto->setUrl("http://127.0.0.1:8000/tutorial/".$p->getTutorial()->getId());
+                        $librarytuto->setUserid($this->getUser());
+                        $entityManager->persist($librarytuto);
+                        $entityManager->flush();
+
+                    }
+
+
+                }
+
+
+
+
+                $total+=$p->getTotal();
+            }
+            $commande->setTotal($total);
+
+            $entityManager->persist($commande);
+            $entityManager->flush();
+
+            $email = (new TemplatedEmail())
+                ->from(new Address('middlefeastesprit@gmail.com', 'MiddleFeast Mail Bot'))
+                ->to($this->getUser()->getEmail())
+                ->subject('Order Passed Successfully')
+                ->htmlTemplate('commande/email.html.twig');
+
+            $mailer->send($email);
+
+
+
+            foreach ($products as $p)
+            {
+                $entityManager->remove($p);
+                $entityManager->flush();
+            }
+
+
+
+
+
+            return $this->redirectToRoute('showCard',[]);
+
+        }
+
+
+
+
+
+
+    }
+
+    /**
+     * @Route("/confirmpayment",name="confirmpayment")
+     * @param CommandeRepository $commandeRepository
+     * @return Response
+     * @throws ApiErrorException
+     */
+    public function confirmPayment(CommandeRepository $commandeRepository) : Response {
+        Stripe::setApiKey('sk_test_51KaGREKDbk4B0h2OX7Ee1tFjHoQgjuTBjNLUeWrcJ8rZZEODvzhG1ROtAbCX9UL571HmQL2ccvDkRfXGDIEO5U2Q00eikm6sLI');
+        $intent = PaymentIntent::create([
+            'amount' => '1000',
+            'currency' => 'usd',
+            // Verify your integration in this guide by including this parameter
+            'metadata' => ['integration_check' => 'accept_a_payment'],
+            'receipt_email' => $this->getUser()->getEmail(),
+        ]);
+        return $this->render('commande/index.html.twig', [
+                'commandes' => $commandeRepository->findAll(),
+            ]);
+    }
+
+    /**
+     * @Route("/confirmpayment1",name="confirmpayment1")
+     * @param AbonnementRepository $abonnementRepository
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     * @throws ApiErrorException
+     */
+    public function confirmPayment1(AbonnementRepository $abonnementRepository,EntityManagerInterface $entityManager) : Response {
+        $abonnement = new Abonnement();
+        $abonnement->setPrix(100);
+        $abonnement->setUser($this->getUser());
+        $abonnement->setDateDebut( new \DateTime());
+        $newDate = new \DateTime();
+        $newDate->modify('+1 month');
+        $abonnement->setDateFin($newDate);
+
+        $entityManager->persist($abonnement);
+        $entityManager->flush();
+
+
+        Stripe::setApiKey('sk_test_51KaGREKDbk4B0h2OX7Ee1tFjHoQgjuTBjNLUeWrcJ8rZZEODvzhG1ROtAbCX9UL571HmQL2ccvDkRfXGDIEO5U2Q00eikm6sLI');
+        $intent = PaymentIntent::create([
+            'amount' => '100',
+            'currency' => 'usd',
+            // Verify your integration in this guide by including this parameter
+            'metadata' => ['integration_check' => 'accept_a_payment'],
+            'receipt_email' => $this->getUser()->getEmail(),
+        ]);
+
+        return $this->render('abonnement/mySubscription.html.twig', [
+            'sub'=>$abonnementRepository->findOneBy(['user'=>$this->getUser()])
+        ]);
+    }
+
+    /**
+     * @Route("/confirmpayment2",name="confirmpayment2")
+     * @param AbonnementRepository $abonnementRepository
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     * @throws ApiErrorException
+     */
+    public function confirmPayment2(AbonnementRepository $abonnementRepository,EntityManagerInterface $entityManager) : Response {
+        $abonnement = new Abonnement();
+        $abonnement->setPrix(250);
+        $abonnement->setUser($this->getUser());
+        $abonnement->setDateDebut( new \DateTime());
+        $newDate = new \DateTime();
+        $newDate->modify('+3 month');
+        $abonnement->setDateFin($newDate);
+
+        $entityManager->persist($abonnement);
+        $entityManager->flush();
+
+        Stripe::setApiKey('sk_test_51KaGREKDbk4B0h2OX7Ee1tFjHoQgjuTBjNLUeWrcJ8rZZEODvzhG1ROtAbCX9UL571HmQL2ccvDkRfXGDIEO5U2Q00eikm6sLI');
+        $intent = PaymentIntent::create([
+            'amount' => '250',
+            'currency' => 'usd',
+            // Verify your integration in this guide by including this parameter
+            'metadata' => ['integration_check' => 'accept_a_payment'],
+            'receipt_email' => $this->getUser()->getEmail(),
+        ]);
+        return $this->render('abonnement/mySubscription.html.twig', [
+            'sub'=>$abonnementRepository->findOneBy(['user'=>$this->getUser()])
+        ]);
+    }
+
+    /**
+     * @Route("/confirmpayment3",name="confirmpayment3")
+     * @param AbonnementRepository $abonnementRepository
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     * @throws ApiErrorException
+     */
+    public function confirmPayment3(AbonnementRepository $abonnementRepository,EntityManagerInterface $entityManager) : Response {
+        $abonnement = new Abonnement();
+        $abonnement->setPrix(950);
+        $abonnement->setUser($this->getUser());
+        $abonnement->setDateDebut( new \DateTime());
+        $newDate = new \DateTime();
+        $newDate->modify('+1 year');
+        $abonnement->setDateFin($newDate);
+
+        $entityManager->persist($abonnement);
+        $entityManager->flush();
+        Stripe::setApiKey('sk_test_51KaGREKDbk4B0h2OX7Ee1tFjHoQgjuTBjNLUeWrcJ8rZZEODvzhG1ROtAbCX9UL571HmQL2ccvDkRfXGDIEO5U2Q00eikm6sLI');
+        $intent = PaymentIntent::create([
+            'amount' => '950',
+            'currency' => 'usd',
+            // Verify your integration in this guide by including this parameter
+            'metadata' => ['integration_check' => 'accept_a_payment'],
+            'receipt_email' => $this->getUser()->getEmail(),
+        ]);
+
+
+        return $this->render('abonnement/mySubscription.html.twig', [
+            'sub'=>$abonnementRepository->findOneBy(['user'=>$this->getUser()])
+        ]);
     }
 }

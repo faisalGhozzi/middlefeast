@@ -28,6 +28,7 @@ class FormationController extends AbstractController
         return $this->render('formation/index.html.twig', [
             'formations' => $formationRepository->findAll(),
         ]);
+        
     }
 
     /**

@@ -29,6 +29,14 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Routing\Annotation\Route;
 
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\Label\Alignment\LabelAlignmentCenter;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\PngWriter;
+
 /**
  * @Route("/panier")
  */
@@ -227,7 +235,7 @@ class PanierController extends AbstractController
 
             $librarytuto = new Library();
             $libraryform = new Library();
-
+            $formationsNames = "";
             foreach ($products as $p)
             {
 
@@ -236,11 +244,32 @@ class PanierController extends AbstractController
                     $formation = $entityManager->getRepository(Formation::class)->find($p->getFormation()->getId());
                     if($formation)
                     {
+                         $formationsNames .= $p->getFormation()->getDescription();
                         $libraryform->setUrl("http://127.0.0.1:8000/formation/".$p->getFormation()->getId());
                         $libraryform->setUserid($this->getUser());
                         $entityManager->persist($libraryform);
                         $entityManager->flush();
+
+                        $result = Builder::create()
+                            ->writer(new PngWriter())
+                            ->labelText("Courses Ticket")
+                            ->writerOptions([])
+                            ->data("Username : ".$p->getUser()->getUsername()."| Email : ".$p->getUser()->getEmail()."| Course(s) : ".$formationsNames."|")
+                            ->encoding(new Encoding('UTF-8'))
+                            ->errorCorrectionLevel(new ErrorCorrectionLevelHigh())
+                            ->size(300)
+                            ->margin(10)
+                            ->roundBlockSizeMode(new RoundBlockSizeModeMargin())
+                            ->labelFont(new NotoSans(20))
+                            ->labelAlignment(new LabelAlignmentCenter())
+                            ->build();
+
+                        $webPath = $this->getParameter('kernel.project_dir').'/public/';
+
+                        $result->saveToFile($webPath.'/assets/formation.png');
                     }
+
+
                 }
 
                 if($p->getTutorial()->getId()!=null)
@@ -268,10 +297,13 @@ class PanierController extends AbstractController
             $entityManager->persist($commande);
             $entityManager->flush();
 
+            $webPath = $this->getParameter('kernel.project_dir').'/public/';
+
             $email = (new TemplatedEmail())
                 ->from(new Address('middlefeastesprit@gmail.com', 'MiddleFeast Mail Bot'))
                 ->to($this->getUser()->getEmail())
                 ->subject('Order Passed Successfully')
+                ->embedFromPath($webPath.'/assets/formation.png')
                 ->htmlTemplate('commande/email.html.twig');
 
             $mailer->send($email);

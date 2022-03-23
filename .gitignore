@@ -23,3 +23,6 @@
 /Web/.web-server-pid
 ###< symfony/web-server-bundle ###
 /Web/.idea
+/CodenameOne/nbproject/private/
+/Mobile/nbproject/private/
+/Mobile/build/

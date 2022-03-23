@@ -265,13 +265,9 @@ class PanierController extends AbstractController
                             ->build();
 
                         $webPath = $this->getParameter('kernel.project_dir').'/public/';
-
                         $result->saveToFile($webPath.'/assets/formation.png');
                     }
-
-
                 }
-
                 if($p->getTutorial()->getId()!=null)
                 {
                     $tutorial = $entityManager->getRepository(Tutorial::class)->find($p->getTutorial()->getId());
@@ -281,15 +277,8 @@ class PanierController extends AbstractController
                         $librarytuto->setUserid($this->getUser());
                         $entityManager->persist($librarytuto);
                         $entityManager->flush();
-
                     }
-
-
                 }
-
-
-
-
                 $total+=$p->getTotal();
             }
             $commande->setTotal($total);
@@ -307,28 +296,13 @@ class PanierController extends AbstractController
                 ->htmlTemplate('commande/email.html.twig');
 
             $mailer->send($email);
-
-
-
             foreach ($products as $p)
             {
                 $entityManager->remove($p);
                 $entityManager->flush();
             }
-
-
-
-
-
             return $this->redirectToRoute('showCard',[]);
-
         }
-
-
-
-
-
-
     }
 
     /**

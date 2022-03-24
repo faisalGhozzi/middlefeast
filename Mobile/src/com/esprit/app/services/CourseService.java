@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Date;
-import java.text.SimpleDateFormat; 
+
 
 public class CourseService {
     public ArrayList<Course> course;
@@ -38,7 +38,10 @@ public class CourseService {
 
     public boolean addCourse(Course c){
         String url = Statics.BASE_URL+"/formation/json/new";
+        
+        
         req.setUrl(url);
+        req.setPost(true);
         req.addArgument("price",String.valueOf(c.getPrice()));
         req.addArgument("mode",String.valueOf(c.getMode()));
         req.addArgument("dateDebut",String.valueOf(c.getDateDebut()));

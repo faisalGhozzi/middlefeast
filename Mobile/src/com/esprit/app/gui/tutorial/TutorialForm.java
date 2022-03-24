@@ -48,6 +48,9 @@ public class TutorialForm extends Form{
 
                    });		*/
 		}
+                this.getToolbar().addCommandToRightBar("Add", null, (evt) -> {
+                    new AddTutorialForm(previous, theme, 0).show();
+                });
 		this.getToolbar().addCommandToLeftBar("Return", null, (evt) -> {
                     previous.showBack();
                 });

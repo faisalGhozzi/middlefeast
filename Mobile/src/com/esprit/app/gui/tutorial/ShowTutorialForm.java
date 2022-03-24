@@ -8,6 +8,8 @@ import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
 import com.codename1.ui.URLImage;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
@@ -49,7 +51,14 @@ public class ShowTutorialForm extends Form{
         s.setPaddingUnit(Style.UNIT_TYPE_DIPS);
         s.setPadding(6, 6, 6, 6);
         
-        this.addAll(img, title, description, mode, price, starting);
+        update.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                new AddTutorialForm(previous, theme, t.getId()).show();
+            }
+        });
+        
+        this.addAll(img, title, description, mode, price, starting, update);
 
         this.getToolbar().addCommandToLeftBar("Return", null, (evt) -> {
             previous.showBack();

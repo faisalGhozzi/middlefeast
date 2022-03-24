@@ -15,15 +15,10 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-/**
- * Class FormationController
- * @package App\Controller
- * @Route("/formation")
- */
 class FormationController extends AbstractController
 {
     /**
-     * @Route("/", name="formation_index")
+     * @Route("/formation/", name="formation_index")
      * @param FormationRepository $formationRepository
      * @return Response
      */
@@ -36,7 +31,7 @@ class FormationController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="formation_new")
+     * @Route("/formation/new", name="formation_new")
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @return Response
@@ -63,7 +58,7 @@ class FormationController extends AbstractController
     // JSON RESPONSES
 
     /**
-     * @Route("/json", name="FormationJsonAction")
+     * @Route("/formation/json", name="FormationJsonAction")
      * @throws ExceptionInterface
      */
     public function formationJsonAction(): JsonResponse
@@ -77,7 +72,8 @@ class FormationController extends AbstractController
     }
 
     /**
-     * @Route("/json/new", name="newFormationJson")
+     * @Route("/formation/json/new", name="newFormationJson", methods={"POST"})
+     * @throws \Exception
      */
     public function newFormationJson(Request $request): JsonResponse
     {
@@ -86,8 +82,8 @@ class FormationController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 
         $formation->setPrice($request->get('price'));
-        $formation->setDateDebut($request->get('dateDebut'));
-        $formation->setDateFin($request->get('dateFin'));
+        $formation->setDateDebut(new \DateTime($request->get('dateDebut')));
+        $formation->setDateFin(new \DateTime($request->get('dateFin')));
         $formation->setDescription($request->get('description'));
         $formation->setDuree($request->get('duree'));
         $formation->setMode($request->get('mode'));
@@ -99,7 +95,7 @@ class FormationController extends AbstractController
     }
 
     /**
-     * @Route("/json/update/{id}", name="updateFormationJson")
+     * @Route("/formation/json/update/{id}", name="updateFormationJson")
      */
     public function updateFormationJson(Request $request, $id): JsonResponse
     {
@@ -120,7 +116,7 @@ class FormationController extends AbstractController
     }
 
     /**
-     * @Route("/json/{id}", name="FormationIdJson")
+     * @Route("/formation/json/{id}", name="FormationIdJson")
      * @throws ExceptionInterface
      */
     public function formationIdJson($id): JsonResponse
@@ -134,7 +130,7 @@ class FormationController extends AbstractController
     }
 
     /**
-     * @Route("/json/delete/{id}", name="deleteFormationJsonAction")
+     * @Route("/formation/json/delete/{id}", name="deleteFormationJsonAction")
      * @throws ExceptionInterface
      */
     public function deleteFormationJsonAction($id): JsonResponse
@@ -151,7 +147,7 @@ class FormationController extends AbstractController
     // JSON RESPONSES DONE !!!
 
     /**
-     * @Route("/{id}", name="formation_show")
+     * @Route("/formation/{id}", name="formation_show")
      * @param Formation $formation
      * @return Response
      */
@@ -163,7 +159,7 @@ class FormationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="formation_edit")
+     * @Route("/formation/{id}/edit", name="formation_edit")
      * @param Request $request
      * @param Formation $formation
      * @param EntityManagerInterface $entityManager
@@ -185,7 +181,7 @@ class FormationController extends AbstractController
         ]);
     }
     /**
-     * @Route("/{id}", name="formation_delete")
+     * @Route("/formation/{id}", name="formation_delete")
      * @param Request $request
      * @param Formation $formation
      * @param EntityManagerInterface $entityManager

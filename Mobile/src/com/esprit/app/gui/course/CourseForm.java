@@ -41,7 +41,7 @@ public class CourseForm extends Form{
                     previous.showBack();
                 });
                 this.getToolbar().addCommandToRightBar("New", null , (evt) -> {
-                    new AddCourseForm(previous, theme).show();
+                    new AddCourseForm(previous, theme, 0).show();
                 });
                 this.add(list);
         

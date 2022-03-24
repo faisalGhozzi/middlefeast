@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
+import java.text.SimpleDateFormat; 
 
 public class TutorialService {
     public ArrayList<Tutorial> tutorial;
@@ -33,10 +35,34 @@ public class TutorialService {
 	req = DataSource.getInstance().getRequest();
     }
 
-    public boolean addCourse(Tutorial t){
+    public boolean addTutorial(Tutorial t){
         String url = Statics.BASE_URL+"/tutorial/json/new";
         req.setUrl(url);
-        req.addArgument("id",String.valueOf(t.getId()));
+        req.addArgument("category",String.valueOf(t.getCategory()));
+        req.addArgument("image",String.valueOf(t.getImage()));
+        req.addArgument("dateTuto",String.valueOf(t.getDateTuto()));
+        req.addArgument("titre",String.valueOf(t.getTitre()));
+        req.addArgument("video",String.valueOf(t.getVideo()));
+        req.addArgument("description", String.valueOf(t.getDescription()));
+        req.addArgument("prix", String.valueOf(t.getPrix()));
+
+        InfiniteProgress prog = new InfiniteProgress();
+        Dialog d = prog.showInfiniteBlocking();
+        req.setDisposeOnCompletion(d);
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                resultOk = req.getResponseCode() == 200;
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return resultOk;
+    }
+    
+    public boolean updateTutorial(Tutorial t){
+        String url = Statics.BASE_URL+"/tutorial/json/update/"+String.valueOf(t.getId());
+        req.setUrl(url);
         req.addArgument("category",String.valueOf(t.getCategory()));
         req.addArgument("image",String.valueOf(t.getImage()));
         req.addArgument("dateTuto",String.valueOf(t.getDateTuto()));
@@ -72,8 +98,8 @@ public class TutorialService {
             t.setCategory(category);
             String image = obj.get("image").toString();
             t.setImage(image);
-            String date_tuto = obj.get("dateTuto").toString();
-            t.setDateTuto(date_tuto);
+            Map<String,Object> date_tuto = (Map<String,Object>)obj.get("dateTuto");
+            t.setDateTuto(new Date((long)Float.parseFloat(date_tuto.get("timestamp").toString())*1000));
             String titre = obj.get("titre").toString();
             t.setTitre(titre);
             String video = obj.get("video").toString();
@@ -98,8 +124,8 @@ public class TutorialService {
         t.setCategory(category);
         String image = tutorialsListJson.get("image").toString();
         t.setImage(image);
-        String date_tuto = tutorialsListJson.get("dateTuto").toString();
-        t.setDateTuto(date_tuto);
+        Map<String,Object> date_tuto = (Map<String,Object>)tutorialsListJson.get("dateTuto");
+        t.setDateTuto(new Date((long)Float.parseFloat(date_tuto.get("timestamp").toString())*1000));
         String titre = tutorialsListJson.get("titre").toString();
         t.setTitre(titre);
         String video = tutorialsListJson.get("video").toString();

@@ -13,6 +13,8 @@ import com.codename1.ui.FontImage;
 
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.esprit.app.entity.Course;
 import com.esprit.app.services.CourseService;
@@ -36,9 +38,17 @@ public class ShowCourseForm extends Form {
         SpanLabel starting = new SpanLabel("Starting : "+new SimpleDateFormat("MM/dd/yyyy").format(c.getDateDebut()));
         SpanLabel fin = new SpanLabel("Ending : "+new SimpleDateFormat("MM/dd/yyyy").format(c.getDateDebut()));
         SpanLabel duree = new SpanLabel("Duration : "+c.getDuree());
-
-        this.addAll(description, mode, price, starting, fin, duree);
-
+        
+        update.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                new AddCourseForm(previous, theme, c.getId()).show();
+            }
+        });
+        
+        this.addAll(description, mode, price, starting, fin, duree, update);
+        
+        
 
 
         this.getToolbar().addCommandToLeftBar("Return", null, (evt) -> {

@@ -5,18 +5,20 @@
  */
 package com.esprit.app.entity;
 
+import java.util.Date;
+
 
 public class Tutorial {
     private int id;
     private String video;
     private String image;
-    private String dateTuto;
+    private Date dateTuto;
     private String category;
     private String titre;
     private String description;
     private double prix;
 
-    public Tutorial(int id, String video, String image, String dateTuto, String category, String titre, String description, double prix) {
+    public Tutorial(int id, String video, String image, Date dateTuto, String category, String titre, String description, double prix) {
         this.id = id;
         this.video = video;
         this.image = image;
@@ -27,7 +29,7 @@ public class Tutorial {
         this.prix = prix;
     }
 
-    public Tutorial(String video, String image, String dateTuto, String category, String titre, String description, double prix) {
+    public Tutorial(String video, String image, Date dateTuto, String category, String titre, String description, double prix) {
         this.video = video;
         this.image = image;
         this.dateTuto = dateTuto;
@@ -64,11 +66,11 @@ public class Tutorial {
         this.image = image;
     }
 
-    public String getDateTuto() {
+    public Date getDateTuto() {
         return dateTuto;
     }
 
-    public void setDateTuto(String dateTuto) {
+    public void setDateTuto(Date dateTuto) {
         this.dateTuto = dateTuto;
     }
 

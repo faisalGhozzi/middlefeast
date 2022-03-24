@@ -39,7 +39,29 @@ public class CourseService {
     public boolean addCourse(Course c){
         String url = Statics.BASE_URL+"/formation/json/new";
         req.setUrl(url);
-        req.addArgument("id",String.valueOf(c.getId()));
+        req.addArgument("price",String.valueOf(c.getPrice()));
+        req.addArgument("mode",String.valueOf(c.getMode()));
+        req.addArgument("dateDebut",String.valueOf(c.getDateDebut()));
+        req.addArgument("dateFin",String.valueOf(c.getDateFin()));
+        req.addArgument("duree",String.valueOf(c.getDuree()));
+        req.addArgument("description", String.valueOf(c.getDescription()));
+        InfiniteProgress prog = new InfiniteProgress();
+        Dialog d = prog.showInfiniteBlocking();
+        req.setDisposeOnCompletion(d);
+        req.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                resultOk = req.getResponseCode() == 200;
+                req.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(req);
+        return resultOk;
+    }
+    
+    public boolean updateCourse(Course c){
+        String url = Statics.BASE_URL+"/formation/json/update/"+String.valueOf(c.getId());
+        req.setUrl(url);
         req.addArgument("price",String.valueOf(c.getPrice()));
         req.addArgument("mode",String.valueOf(c.getMode()));
         req.addArgument("dateDebut",String.valueOf(c.getDateDebut()));

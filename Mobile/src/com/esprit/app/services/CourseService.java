@@ -17,9 +17,12 @@ import com.esprit.app.entity.Course;
 import com.esprit.app.utils.DataSource;
 import com.esprit.app.utils.Statics;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Date;
+import java.text.SimpleDateFormat; 
 
 public class CourseService {
     public ArrayList<Course> course;
@@ -57,7 +60,7 @@ public class CourseService {
         return resultOk;
     }
 
-    public ArrayList<Course> parseCourses(String jsonText) throws IOException{
+    public ArrayList<Course> parseCourses(String jsonText) throws IOException, ParseException{
         course = new ArrayList<>();
         JSONParser j = new JSONParser();
         Map<String,Object> coursesListJson = j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
@@ -68,10 +71,10 @@ public class CourseService {
             c.setId(id);
             int price = (int)Float.parseFloat(obj.get("price").toString());
             c.setPrice(price);
-            String dateDebut = obj.get("dateDebut").toString();
-            c.setDateDebut(dateDebut);
-            String dateFin = obj.get("dateFin").toString();
-            c.setDateDebut(dateFin);
+            Map<String,Object> dateDebut = (Map<String,Object>)obj.get("dateDebut");
+            c.setDateDebut(new Date((long)Float.parseFloat(dateDebut.get("timestamp").toString())*1000));
+            Map<String,Object> dateFin = (Map<String,Object>)obj.get("dateFin");
+            c.setDateFin(new Date((long)Float.parseFloat(dateFin.get("timestamp").toString())*1000));
             String duree = obj.get("duree").toString();
             c.setDuree(duree);
             String description = obj.get("description").toString();
@@ -83,7 +86,7 @@ public class CourseService {
         return course;
     }
     
-    public Course parseCourse(String jsonText) throws IOException{
+    public Course parseCourse(String jsonText) throws IOException, ParseException{
         course = new ArrayList<>();
         JSONParser j = new JSONParser();
         Map<String,Object> coursesListJson = j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
@@ -92,10 +95,10 @@ public class CourseService {
         c.setId(id);
         int price = (int)Float.parseFloat(coursesListJson.get("price").toString());
         c.setPrice(price);
-        String dateDebut = coursesListJson.get("dateDebut").toString();
-        c.setDateDebut(dateDebut);
-        String dateFin = coursesListJson.get("dateFin").toString();
-        c.setDateDebut(dateFin);
+        Map<String,Object> dateDebut = (Map<String,Object>)coursesListJson.get("dateDebut");
+        c.setDateDebut(new Date((long)Float.parseFloat(dateDebut.get("timestamp").toString())*1000));
+        Map<String,Object> dateFin = (Map<String,Object>)coursesListJson.get("dateFin");
+        c.setDateFin(new Date((long)Float.parseFloat(dateFin.get("timestamp").toString())*1000));
         String duree = coursesListJson.get("duree").toString();
         c.setDuree(duree);
         String description = coursesListJson.get("description").toString();
@@ -121,6 +124,8 @@ public class CourseService {
                     course = parseCourses(new String(req.getResponseData()));
                 }catch(IOException ex){
                     ex.printStackTrace();
+                } catch (ParseException ex) {
+                    ex.printStackTrace();
                 }
                 req.removeResponseListener(this);
             }
@@ -143,6 +148,8 @@ public class CourseService {
                 try{
                     courseclass = parseCourse(new String(req.getResponseData()));
                 }catch(IOException ex){
+                    ex.printStackTrace();
+                } catch (ParseException ex) {
                     ex.printStackTrace();
                 }
                 req.removeResponseListener(this);

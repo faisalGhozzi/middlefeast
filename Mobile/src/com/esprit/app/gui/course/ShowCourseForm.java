@@ -16,6 +16,7 @@ import com.codename1.ui.Image;
 import com.codename1.ui.layouts.BoxLayout;
 import com.esprit.app.entity.Course;
 import com.esprit.app.services.CourseService;
+import java.text.SimpleDateFormat;
 
 public class ShowCourseForm extends Form {
     @SuppressWarnings("unused")
@@ -32,8 +33,8 @@ public class ShowCourseForm extends Form {
         SpanLabel description = new SpanLabel("Description: "+c.getDescription()+"");
         SpanLabel mode = new SpanLabel("Mode: "+c.getMode());
         SpanLabel price = new SpanLabel("Price : "+Float.toString(c.getPrice()));
-        SpanLabel starting = new SpanLabel("Starting : "+c.getDateDebut());
-        SpanLabel fin = new SpanLabel("Ending : "+c.getDateFin());
+        SpanLabel starting = new SpanLabel("Starting : "+new SimpleDateFormat("MM/dd/yyyy").format(c.getDateDebut()));
+        SpanLabel fin = new SpanLabel("Ending : "+new SimpleDateFormat("MM/dd/yyyy").format(c.getDateDebut()));
         SpanLabel duree = new SpanLabel("Duration : "+c.getDuree());
 
         this.addAll(description, mode, price, starting, fin, duree);

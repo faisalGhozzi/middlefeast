@@ -4,24 +4,20 @@
  * and open the template in the editor.
  */
 package com.esprit.app.entity;
+import java.util.Date;
 
-
-/**
- *
- * @author Faycal Ghozzi
- */
 public class Course {
     private int id;
     private int price;
     private String mode;
-    private String dateDebut;
-    private String dateFin;
+    private Date dateDebut;
+    private Date dateFin;
     private String duree;
     private String description;
     
     public Course(){}
 
-    public Course(int id, int price, String mode, String dateDebut, String dateFin, String duree, String description) {
+    public Course(int id, int price, String mode, Date dateDebut, Date dateFin, String duree, String description) {
         this.id = id;
         this.price = price;
         this.mode = mode;
@@ -31,7 +27,7 @@ public class Course {
         this.description = description;
     }
 
-    public Course(int price, String mode, String dateDebut, String dateFin, String duree, String description) {
+    public Course(int price, String mode, Date dateDebut, Date dateFin, String duree, String description) {
         this.price = price;
         this.mode = mode;
         this.dateDebut = dateDebut;
@@ -64,19 +60,19 @@ public class Course {
         this.mode = mode;
     }
 
-    public String getDateDebut() {
+    public Date getDateDebut() {
         return dateDebut;
     }
 
-    public void setDateDebut(String dateDebut) {
+    public void setDateDebut(Date dateDebut) {
         this.dateDebut = dateDebut;
     }
 
-    public String getDateFin() {
+    public Date getDateFin() {
         return dateFin;
     }
 
-    public void setDateFin(String dateFin) {
+    public void setDateFin(Date dateFin) {
         this.dateFin = dateFin;
     }
 

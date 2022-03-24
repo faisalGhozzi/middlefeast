@@ -40,6 +40,9 @@ public class CourseForm extends Form{
 		this.getToolbar().addCommandToLeftBar("Return", null, (evt) -> {
                     previous.showBack();
                 });
+                this.getToolbar().addCommandToRightBar("New", null , (evt) -> {
+                    new AddCourseForm(previous, theme).show();
+                });
                 this.add(list);
         
     }    

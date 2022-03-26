@@ -15,6 +15,7 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.util.Resources;
 import com.esprit.app.entity.Tutorial;
+import com.esprit.app.gui.HomeForm;
 import com.esprit.app.services.TutorialService;
 import com.esprit.app.utils.Statics;
 import java.io.IOException;
@@ -28,31 +29,26 @@ public class TutorialForm extends Form{
     public TutorialForm(Form previous, Resources res)throws IOException{
         super("Tutorials List", GridLayout.autoFit());
         this.theme = theme;
-        
+        this.revalidate();
         tutorials = new TutorialService().getAllTutorials();
-		//this.add(new SpanLabel(new ProduitsService().getAllProducts().toString()));
 		Container list = new Container(BoxLayout.y());
                 list.setScrollableY(true);
                 for (Tutorial tutorial : tutorials) {
                     MultiButton mb = new MultiButton(tutorial.getTitre());
                     EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(50, 50, 0xffff0000), true);
-                    Image i = URLImage.createToStorage(placeholder,tutorial.getImage(),Statics.BASE_URL+"/uploads/"+tutorial.getImage());
+                    Image i = URLImage.createToStorage(placeholder, tutorial.getImage() != null ? tutorial.getImage() : "no_image",tutorial.getImage() != null ? Statics.BASE_URL+"/uploads/"+tutorial.getImage() : Statics.BASE_URL+"/uploads/no_image.png");
                     mb.setIcon(i.fill(200, 200));
                     mb.setTextLine2(tutorial.getPrix() > 0 ? String.valueOf(tutorial.getPrix()) + " TND" : "FREE");
                     mb.addActionListener((evt) -> {
                         new ShowTutorialForm(this, theme, tutorial.getId()).show();
                     });
                     list.add(mb);
-                    /*img.addPointerReleasedListener((evt)->{
-                           new ProductDetailsForm(this, theme,prod.getId()).show();
-
-                   });		*/
 		}
                 this.getToolbar().addCommandToRightBar("Add", null, (evt) -> {
-                    new AddTutorialForm(previous, theme, 0).show();
+                    new AddTutorialForm(this, theme, 0).show();
                 });
 		this.getToolbar().addCommandToLeftBar("Return", null, (evt) -> {
-                    previous.showBack();
+                    previous.show();
                 });
                 this.add(list);
         

@@ -38,10 +38,11 @@ public class TutorialService {
     public boolean addTutorial(Tutorial t){
         String url = Statics.BASE_URL+"/tutorial/json/new";
         req.setUrl(url);
+        req.setPost(true);
         req.addArgument("category",String.valueOf(t.getCategory()));
-        req.addArgument("image",String.valueOf(t.getImage()));
         req.addArgument("dateTuto",String.valueOf(t.getDateTuto()));
         req.addArgument("titre",String.valueOf(t.getTitre()));
+        req.addArgument("image",String.valueOf(t.getImage()));
         req.addArgument("video",String.valueOf(t.getVideo()));
         req.addArgument("description", String.valueOf(t.getDescription()));
         req.addArgument("prix", String.valueOf(t.getPrix()));
@@ -63,6 +64,7 @@ public class TutorialService {
     public boolean updateTutorial(Tutorial t){
         String url = Statics.BASE_URL+"/tutorial/json/update/"+String.valueOf(t.getId());
         req.setUrl(url);
+        req.setPost(true);
         req.addArgument("category",String.valueOf(t.getCategory()));
         req.addArgument("image",String.valueOf(t.getImage()));
         req.addArgument("dateTuto",String.valueOf(t.getDateTuto()));

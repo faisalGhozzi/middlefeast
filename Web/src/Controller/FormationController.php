@@ -6,6 +6,7 @@ use App\Entity\Formation;
 use App\Form\FormationFormType;
 use App\Repository\FormationRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -73,7 +74,7 @@ class FormationController extends AbstractController
 
     /**
      * @Route("/formation/json/new", name="newFormationJson", methods={"POST"})
-     * @throws \Exception
+     * @throws Exception
      */
     public function newFormationJson(Request $request): JsonResponse
     {
@@ -96,6 +97,7 @@ class FormationController extends AbstractController
 
     /**
      * @Route("/formation/json/update/{id}", name="updateFormationJson")
+     * @throws Exception
      */
     public function updateFormationJson(Request $request, $id): JsonResponse
     {
@@ -103,8 +105,8 @@ class FormationController extends AbstractController
 
         $formation = $em->getRepository(Formation::class)->find($id);
 
-        $formation->setDateDebut($request->get("dateDebut"));
-        $formation->setDateFin($request->get("dateFin"));
+        $formation->setDateDebut(new \DateTime($request->get("dateDebut")));
+        $formation->setDateFin(new \DateTime($request->get("dateFin")));
         $formation->setDescription($request->get("description"));
         $formation->setDuree($request->get("duree"));
         $formation->setMode($request->get("mode"));

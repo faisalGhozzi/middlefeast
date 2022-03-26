@@ -4,6 +4,7 @@ package com.esprit.app.gui.tutorial;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
 import com.codename1.ui.Button;
+import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.Form;
 import com.codename1.ui.Image;
@@ -15,7 +16,7 @@ import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import com.esprit.app.entity.Tutorial;
 import com.esprit.app.services.TutorialService;
-
+import java.io.IOException;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -35,10 +36,10 @@ public class ShowTutorialForm extends Form{
         t = new TutorialService().getTutorial(id);
         Button update = new Button("Update");
         
-        EncodedImage enc = EncodedImage.createFromImage(Image.createImage(800,800), true);
+        EncodedImage enc = EncodedImage.createFromImage(Image.createImage(Display.getInstance().getDisplayWidth(),200), true);
         String url = t.getImage();
         ImageViewer img = new ImageViewer(URLImage.createToStorage(enc, url, url));
-        img.getAllStyles().setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FIT);
+        img.getAllStyles().setBackgroundType(Style.BACKGROUND_IMAGE_SCALED_FILL);
 
         SpanLabel title = new SpanLabel("Title : "+t.getTitre()+"");
         
@@ -61,12 +62,20 @@ public class ShowTutorialForm extends Form{
         this.addAll(img, title, description, mode, price, starting, update);
 
         this.getToolbar().addCommandToLeftBar("Return", null, (evt) -> {
-            previous.showBack();
+            try {
+                new TutorialForm(previous, theme).show();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         });
         
         this.getToolbar().addCommandToRightBar("Delete", null , (evt) -> {
             ts.deleteTutorial(id);
-            previous.showBack();
+            try {
+                new TutorialForm(previous, theme).show();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
         });
     }
 }

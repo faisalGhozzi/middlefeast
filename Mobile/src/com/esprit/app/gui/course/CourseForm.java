@@ -24,7 +24,6 @@ public class CourseForm extends Form{
     public CourseForm(Form previous, Resources res)throws IOException{
         super("Courses List", GridLayout.autoFit());
         this.theme = theme;
-        
         courses = new CourseService().getAllCourses();
 		//this.add(new SpanLabel(new ProduitsService().getAllProducts().toString()));
 		Container list = new Container(BoxLayout.y());
@@ -33,7 +32,7 @@ public class CourseForm extends Form{
                     MultiButton mb = new MultiButton(course.getDescription());
                     mb.setTextLine2(course.getPrice() > 0 ? String.valueOf(course.getPrice()) + " TND" : "FREE");
                     mb.addActionListener((evt) -> {
-                        new ShowCourseForm(this, theme, course.getId()).show();
+                        new ShowCourseForm(this.getComponentForm(), theme, course.getId()).show();
                     });
                     list.add(mb);
 		}
@@ -41,7 +40,7 @@ public class CourseForm extends Form{
                     previous.showBack();
                 });
                 this.getToolbar().addCommandToRightBar("New", null , (evt) -> {
-                    new AddCourseForm(previous, theme, 0).show();
+                    new AddCourseForm(this.getComponentForm(), theme, 0).show();
                 });
                 this.add(list);
         

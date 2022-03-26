@@ -38,8 +38,6 @@ public class CourseService {
 
     public boolean addCourse(Course c){
         String url = Statics.BASE_URL+"/formation/json/new";
-        
-        
         req.setUrl(url);
         req.setPost(true);
         req.addArgument("price",String.valueOf(c.getPrice()));
@@ -65,6 +63,7 @@ public class CourseService {
     public boolean updateCourse(Course c){
         String url = Statics.BASE_URL+"/formation/json/update/"+String.valueOf(c.getId());
         req.setUrl(url);
+        req.setPost(true);
         req.addArgument("price",String.valueOf(c.getPrice()));
         req.addArgument("mode",String.valueOf(c.getMode()));
         req.addArgument("dateDebut",String.valueOf(c.getDateDebut()));

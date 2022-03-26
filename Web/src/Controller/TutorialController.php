@@ -7,7 +7,9 @@ use App\Form\TutorialFormType;
 use App\Repository\CommandeRepository;
 use App\Repository\TutorialRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -18,17 +20,10 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-
-/**
- * Class TutorialController
- * @package App\Controller
- * @Route("/tutorial")
- */
-
 class TutorialController extends AbstractController
 {
     /**
-     * @Route("/", name="tutorial_index", methods={"GET"})
+     * @Route("/tutorial/", name="tutorial_index", methods={"GET"})
      * @param TutorialRepository $tutorialRepository
      * @return Response
      */
@@ -42,7 +37,8 @@ class TutorialController extends AbstractController
     // JSON RESPONSES
 
     /**
-     * @Route("/json/new", name="newTutoJson")
+     * @Route("/tutorial/json/new", name="newTutoJson", methods={"POST"})
+     * @throws Exception
      */
     public function newTutoJson(Request $request): JsonResponse
     {
@@ -52,9 +48,38 @@ class TutorialController extends AbstractController
 
         $tutorial->setDescription($request->get('description'));
         $tutorial->setCategory($request->get('category'));
-        $tutorial->setDateTuto($request->get('dateTuto'));
+        $tutorial->setDateTuto(new \DateTime($request->get('dateTuto')));
+
         $tutorial->setImage($request->get('image'));
         $tutorial->setVideo($request->get('video'));
+        /*$imageFile = file_get_contents($request->get('image'));
+
+
+
+        $videoFile = file_get_contents($request->get('video'));*/
+
+        /*if($imageFile && $videoFile){
+            echo $imageFile;
+            $filesystem = new Filesystem();
+
+            $path_info_image = pathinfo($imageFile);
+            $path_info_video = pathinfo($videoFile);
+
+
+            $imageFileName = md5(uniqid()).'.'.$path_info_image['extension'];
+            $videoFileName = md5(uniqid()).'.'.$path_info_video['extension'];
+
+
+            $filesystem->copy($imageFile, $this->getParameter('uploads_tutos').$imageFileName);
+            $filesystem->copy($videoFile, $this->getParameter('uploads_tutos').$videoFileName);
+
+          //  $imageFile->move($this->getParameter('uploads_tutos'), $imageFileName);
+          //  $videoFile->move($this->getParameter('uploads_tutos'), $videoFileName);
+
+            $tutorial->setImage($imageFileName);
+            $tutorial->setVideo($videoFileName);
+
+        }*/
         $tutorial->setPrix($request->get('prix'));
         $tutorial->setTitre($request->get('titre'));
 
@@ -65,7 +90,7 @@ class TutorialController extends AbstractController
     }
 
     /**
-     * @Route("/json", name="TutoJson")
+     * @Route("/tutorial/json", name="TutoJson")
      * @throws ExceptionInterface
      */
     public function tutoJson(): JsonResponse
@@ -79,7 +104,8 @@ class TutorialController extends AbstractController
     }
 
     /**
-     * @Route("/json/update/{id}", name="updateTutoJson")
+     * @Route("/tutorial/json/update/{id}", name="updateTutoJson", methods={"POST"})
+     * @throws Exception
      */
     public function updateTutoJson(Request $request, $id): JsonResponse
     {
@@ -89,7 +115,7 @@ class TutorialController extends AbstractController
 
         $tutorial->setDescription($request->get('description'));
         $tutorial->setCategory($request->get('category'));
-        $tutorial->setDateTuto($request->get('dateTuto'));
+        $tutorial->setDateTuto(new \DateTime($request->get('dateTuto')));
         $tutorial->setImage($request->get('image'));
         $tutorial->setVideo($request->get('video'));
         $tutorial->setPrix($request->get('prix'));
@@ -101,7 +127,7 @@ class TutorialController extends AbstractController
     }
 
     /**
-     * @Route("/json/{id}", name="TutoIdJson")
+     * @Route("/tutorial/json/{id}", name="TutoIdJson")
      * @throws ExceptionInterface
      */
     public function tutoIdJson($id): JsonResponse
@@ -115,7 +141,7 @@ class TutorialController extends AbstractController
     }
 
     /**
-     * @Route("/json/delete/{id}", name="deleteTutoJson")
+     * @Route("/tutorial/json/delete/{id}", name="deleteTutoJson")
      */
     public function deleteTutoJson($id): JsonResponse
     {
@@ -131,7 +157,7 @@ class TutorialController extends AbstractController
     // JSON Response DONE !!
 
     /**
-     * @Route("/{id}", name="tutorial_show", methods={"GET"})
+     * @Route("/tutorial/{id}", name="tutorial_show", methods={"GET"})
      * @param CommandeRepository $commandeRepository
      * @param Tutorial $tutorial
      * @return Response
@@ -147,7 +173,7 @@ class TutorialController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="tutorial_edit", methods={"GET", "POST"})
+     * @Route("/tutorial/{id}/edit", name="tutorial_edit", methods={"GET", "POST"})
      * @param Request $request
      * @param Tutorial $tutorial
      * @param EntityManagerInterface $entityManager
@@ -191,7 +217,7 @@ class TutorialController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="tutorial_delete", methods={"POST"})
+     * @Route("/tutorial/{id}", name="tutorial_delete", methods={"POST"})
      * @param Request $request
      * @param Tutorial $tutorial
      * @param EntityManagerInterface $entityManager

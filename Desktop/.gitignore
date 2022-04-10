@@ -1,0 +1,29 @@
+
+###> symfony/framework-bundle ###
+/Web/.env.local
+/Web/.env.local.php
+/Web/.env.*.local
+/Web/config/secrets/prod/prod.decrypt.private.php
+/Web/public/bundles/
+/Web/var/
+/Web/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/phpunit-bridge ###
+/Web/.phpunit.result.cache
+/Web/phpunit.xml
+###< symfony/phpunit-bridge ###
+
+###> phpunit/phpunit ###
+/Web/phpunit.xml
+/Web/.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> symfony/web-server-bundle ###
+/Web/.web-server-pid
+###< symfony/web-server-bundle ###
+/Web/.idea
+/CodenameOne/nbproject/private/
+/Mobile/nbproject/private/
+/Mobile/build/
+/Mobile/dist/

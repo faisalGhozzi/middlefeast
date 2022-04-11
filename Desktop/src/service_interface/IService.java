@@ -17,5 +17,5 @@ public interface IService<T> {
 
     List<T> searchBy(String column, String query) throws  SQLException;
 
-    List<T> sortBy(String column, boolean descending);
+    List<T> sortBy(String column, boolean descending) throws SQLException;
 }

@@ -106,11 +106,44 @@ public class CourseService implements IService<Course> {
 
     @Override
     public List<Course> searchBy(String column, String query) throws SQLException {
-        return null;
+        List<Course> courseList = new ArrayList<>();
+        ste = con.createStatement();
+        ResultSet rs = ste.executeQuery("SELECT * FROM formation WHERE "+column+" LIKE '%"+query+"%'");
+        while (rs.next()){
+            Course course = new Course(
+                    rs.getInt(1),
+                    rs.getInt(2),
+                    rs.getString(3),
+                    (Date) rs.getObject(4),
+                    (Date) rs.getObject(5),
+                    rs.getString(6),
+                    rs.getString(7)
+            );
+            courseList.add(course);
+        }
+        return courseList;
     }
 
     @Override
-    public List<Course> sortBy(String column, boolean descending) {
-        return null;
+    public List<Course> sortBy(String column, boolean descending) throws SQLException {
+        List<Course> courseList = new ArrayList<>();
+        ste = con.createStatement();
+
+        ResultSet rs = descending ?
+                ste.executeQuery("SELECT * FROM formation ORDER BY "+column+" DESC") :
+                ste.executeQuery("SELECT * FROM formation ORDER BY "+column+" ASC");
+        while (rs.next()){
+            Course course = new Course(
+                    rs.getInt(1),
+                    rs.getInt(2),
+                    rs.getString(3),
+                    (Date) rs.getObject(4),
+                    (Date) rs.getObject(5),
+                    rs.getString(6),
+                    rs.getString(7)
+            );
+            courseList.add(course);
+        }
+        return courseList;
     }
 }

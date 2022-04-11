@@ -1,5 +1,6 @@
+import entity.Article;
 import entity.Course;
-import entity.Tutorial;
+import service.ArticleService;
 import service.CourseService;
 import service.TutorialService;
 
@@ -7,17 +8,18 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.Scanner;
 
-public class MainTutorial {
+public class MainArticle {
     public static void main(String[] args) throws SQLException {
-        // Tutorial
-        TutorialService tutorialService = new TutorialService();
+        Scanner scanner = new Scanner(System.in);
+        // Article
+        ArticleService articleService = new ArticleService();
         // Show courses list
         System.out.println("Show all starts");
         System.out.println("---------------");
-        if (tutorialService.findAll().isEmpty()) {
+        if (articleService.findAll().isEmpty()) {
             System.out.println("No data found");
         } else {
-            tutorialService.findAll().forEach(System.out::println);
+            articleService.findAll().forEach(System.out::println);
         }
         System.out.println("---------------");
         System.out.println("Show all ends");
@@ -25,52 +27,51 @@ public class MainTutorial {
         // Add course and show
         System.out.println("Add starts");
         System.out.println("---------------");
-        tutorialService.add(new Tutorial("vid", "img", new Date(), "Starters", "10 starters", "Michelin quality starters", 200));
-        tutorialService.findAll().forEach(System.out::println);
+        articleService.add(new Article("Cook like a pro", "Learn how to cook like a michelin starred chef", "no_img.png", new Date(), "test_recette", 0));
+        articleService.findAll().forEach(System.out::println);
         System.out.println("---------------");
         System.out.println("Add Ends");
         System.out.println("---------------");
         // Get items Ids
-        showAvailableIds(tutorialService);
+        showAvailableIds(articleService);
         // Show by id
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Select an id that you want to show the details of : ");
         int opt = scanner.nextInt();
         System.out.println("Showing by id start");
         System.out.println("---------------");
-        System.out.println(tutorialService.findById(opt));
+        System.out.println(articleService.findById(opt));
         System.out.println("---------------");
         System.out.println("Showing by id ended");
         // Delete
-        showAvailableIds(tutorialService);
+        showAvailableIds(articleService);
         System.out.println("Select an id that you want to delete : ");
         opt = scanner.nextInt();
         System.out.println("Deleting by id start");
         System.out.println("---------------");
         System.out.println("List before deletion");
         System.out.println("---------------");
-        tutorialService.findAll().forEach(System.out::println);
-        tutorialService.delete(opt);
+        articleService.findAll().forEach(System.out::println);
+        articleService.delete(opt);
         System.out.println("---------------");
         System.out.println("List after deletion");
         System.out.println("---------------");
-        tutorialService.findAll().forEach(System.out::println);
+        articleService.findAll().forEach(System.out::println);
         System.out.println("---------------");
         System.out.println("Deleting by id ended");
         // Update
-        showAvailableIds(tutorialService);
+        showAvailableIds(articleService);
         System.out.println("Select an id that you want to update : ");
         opt = scanner.nextInt();
         System.out.println("Updating by id start");
         System.out.println("---------------");
         System.out.println("Item before update");
         System.out.println("---------------");
-        System.out.println(tutorialService.findById(opt));
-        tutorialService.update(new Tutorial(opt,"updated_vid", "updated_img", new Date(), "updated_Starters", "13 starters", "Michelin quality starters", 230));
+        System.out.println(articleService.findById(opt));
+        articleService.update(new Article(opt,"Cook like a pro_updated", "Learn how to cook like a michelin starred chef_updated", "no_img_updated.png", new Date(), "test_recette_updated", 0));
         System.out.println("---------------");
         System.out.println("Item after update");
         System.out.println("---------------");
-        System.out.println(tutorialService.findById(opt));
+        System.out.println(articleService.findById(opt));
         System.out.println("---------------");
         System.out.println("Updating by id ended");
         // Search
@@ -79,7 +80,7 @@ public class MainTutorial {
         String col = scanner.nextLine();
         System.out.println("Select pattern to search : ");
         String pat = scanner.nextLine();
-        tutorialService.searchBy(col,pat).forEach(System.out::println);
+        articleService.searchBy(col,pat).forEach(System.out::println);
         System.out.println("Search Ended");
         // Order
         System.out.println("Order ...");
@@ -87,14 +88,14 @@ public class MainTutorial {
         col = scanner.nextLine();
         System.out.println("type true for descending sort, false for ascending sort : ");
         Boolean ord = scanner.nextBoolean();
-        tutorialService.sortBy(col,ord).forEach(System.out::println);
+        articleService.sortBy(col,ord).forEach(System.out::println);
         System.out.println("Order Ended");
     }
 
-    private static void showAvailableIds(TutorialService tutorialService) throws SQLException {
+    private static void showAvailableIds(ArticleService articleService) throws SQLException {
         System.out.println("Getting ids start");
         System.out.println("---------------");
-        tutorialService.findAll().forEach(x -> System.out.println(x.getId()));
+        articleService.findAll().forEach(x -> System.out.println(x.getId()));
         System.out.println("---------------");
         System.out.println("Getting ids ends");
         System.out.println("---------------");

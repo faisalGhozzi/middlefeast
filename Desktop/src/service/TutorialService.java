@@ -112,11 +112,47 @@ public class TutorialService implements IService<Tutorial> {
 
     @Override
     public List<Tutorial> searchBy(String column, String query) throws SQLException {
-        return null;
+        List<Tutorial> tutorialList = new ArrayList<>();
+        ste = con.createStatement();
+        ResultSet rs = ste.executeQuery("SELECT * FROM tutorial WHERE "+column+" LIKE '%"+query+"%'");
+        while (rs.next()){
+            Tutorial tutorial = new Tutorial(
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    (Date) rs.getObject(4),
+                    rs.getString(5),
+                    rs.getString(6),
+                    rs.getString(7),
+                    rs.getDouble(8)
+            );
+            tutorialList.add(tutorial);
+        }
+        return tutorialList;
     }
 
     @Override
-    public List<Tutorial> sortBy(String column, boolean descending) {
-        return null;
+    public List<Tutorial> sortBy(String column, boolean descending) throws SQLException {
+        List<Tutorial> tutorialList = new ArrayList<>();
+        ste = con.createStatement();
+
+        ResultSet rs = descending ?
+                ste.executeQuery("SELECT * FROM tutorial ORDER BY "+column+" DESC") :
+                ste.executeQuery("SELECT * FROM tutorial ORDER BY "+column+" ASC");
+
+        while (rs.next()){
+            Tutorial tutorial = new Tutorial(
+                    rs.getInt(1),
+                    rs.getString(2),
+                    rs.getString(3),
+                    (Date) rs.getObject(4),
+                    rs.getString(5),
+                    rs.getString(6),
+                    rs.getString(7),
+                    rs.getDouble(8)
+            );
+            tutorialList.add(tutorial);
+        }
+        return tutorialList;
     }
 }

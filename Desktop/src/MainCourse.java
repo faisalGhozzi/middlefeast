@@ -1,15 +1,13 @@
 import entity.Course;
 import service.CourseService;
-import utils.Database;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
-public class Main {
+public class MainCourse {
 
     public static void main(String[] args) throws SQLException {
-
+        Scanner scanner = new Scanner(System.in);
         // Course
         CourseService courseService = new CourseService();
         // Show courses list
@@ -26,7 +24,7 @@ public class Main {
         // Add course and show
         System.out.println("Add starts");
         System.out.println("---------------");
-        courseService.add(new Course(300, "Online", new Date(), new Date(), "1", "Michelin quality entree"));
+        courseService.add(new Course(10, "Online", new Date(), new Date(), "1", "Kafteji"));
         courseService.findAll().forEach(System.out::println);
         System.out.println("---------------");
         System.out.println("Add Ends");
@@ -34,7 +32,6 @@ public class Main {
         // Get items Ids
         showAvailableIds(courseService);
         // Show by id
-        Scanner scanner = new Scanner(System.in);
         System.out.println("Select an id that you want to show the details of : ");
         int opt = scanner.nextInt();
         System.out.println("Showing by id start");
@@ -74,6 +71,22 @@ public class Main {
         System.out.println(courseService.findById(opt));
         System.out.println("---------------");
         System.out.println("Updating by id ended");
+        // Search
+        System.out.println("Search ...");
+        System.out.println("Select column to search by : ");
+        String col = scanner.nextLine();
+        System.out.println("Select pattern to search : ");
+        String pat = scanner.nextLine();
+        courseService.searchBy(col,pat).forEach(System.out::println);
+        System.out.println("Search Ended");
+        // Order
+        System.out.println("Order ...");
+        System.out.println("Select column to order by : ");
+        col = scanner.nextLine();
+        System.out.println("type true for descending sort, false for ascending sort : ");
+        Boolean ord = scanner.nextBoolean();
+        courseService.sortBy(col,ord).forEach(System.out::println);
+        System.out.println("Order Ended");
     }
 
     private static void showAvailableIds(CourseService courseService) throws SQLException {

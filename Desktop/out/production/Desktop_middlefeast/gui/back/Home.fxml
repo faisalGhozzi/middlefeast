@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #121212;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.back.HomeController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="766.0" prefWidth="1280.0" style="-fx-background-color: #121212;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.back.HomeController">
    <children>
       <VBox prefHeight="800.0" prefWidth="280.0" style="-fx-background-color: #0a0a0a;" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -91,29 +91,13 @@
             </Button>
          </children>
       </VBox>
-      <Label layoutX="300.0" layoutY="14.0" text="MiddleFeast" textFill="WHITE">
+      <Label layoutX="300.0" text="MiddleFeast" textFill="WHITE">
          <font>
             <Font size="24.0" />
          </font>
       </Label>
-      <AnchorPane fx:id="displyaArea" layoutX="280.0" layoutY="49.0" prefHeight="747.0" prefWidth="1000.0" style="-fx-background-color: #121212;" />
-      <Label alignment="CENTER" layoutX="1231.0" layoutY="14.0" onMouseClicked="#close_app" prefHeight="35.0" prefWidth="35.0">
-         <graphic>
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../Demo/VelotnDash-master/src/com/velotn/images/quit.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Label>
-      <Label alignment="CENTER" layoutX="1186.0" layoutY="14.0" onMouseClicked="#minimize_app" prefHeight="35.0" prefWidth="35.0">
-         <graphic>
-            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../../../Demo/VelotnDash-master/src/com/velotn/images/minimize.png" />
-               </image>
-            </ImageView>
-         </graphic>
-      </Label>
+      <AnchorPane fx:id="displyaArea" layoutX="280.0" layoutY="33.0" prefHeight="733.0" prefWidth="1000.0" style="-fx-background-color: #121212;" />
+      <Label alignment="CENTER" layoutX="1231.0" layoutY="14.0" onMouseClicked="#close_app" prefHeight="35.0" prefWidth="35.0" />
+      <Label alignment="CENTER" layoutX="1186.0" layoutY="14.0" onMouseClicked="#minimize_app" prefHeight="35.0" prefWidth="35.0" />
    </children>
 </AnchorPane>

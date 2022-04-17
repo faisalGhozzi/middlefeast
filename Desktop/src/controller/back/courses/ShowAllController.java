@@ -122,7 +122,6 @@ public class ShowAllController implements Initializable {
             );
             btn.setTextFill(Color.WHITE);
         });
-//        btn.setOnMouseClicked(event -> System.out.println(course));
         btn.setOnAction(event -> {
             Parent root;
             try {
@@ -132,6 +131,7 @@ public class ShowAllController implements Initializable {
                 findByIdController.setCourse(course);
                 Stage stage = new Stage();
                 stage.setTitle("Courses infos");
+                stage.resizableProperty().setValue(false);
                 stage.setScene(new Scene(root));
                 stage.show();
             } catch (IOException e) {

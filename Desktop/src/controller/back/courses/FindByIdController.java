@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -64,6 +65,7 @@ public class FindByIdController implements Initializable {
             Stage stage = new Stage();
             stage.setTitle("Confirm delete");
             stage.setScene(new Scene(root));
+            stage.initStyle(StageStyle.UNDECORATED);
             stage.show();
             closeWindow(btnDelete);
         } catch (IOException e) {
@@ -72,8 +74,18 @@ public class FindByIdController implements Initializable {
     }
 
     @FXML
-    void updateCourse(ActionEvent event) {
-
+    void updateCourse(ActionEvent event) throws IOException {
+        Parent root;
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../gui/back/courses/Add.fxml"));
+        root = (Parent) fxmlLoader.load();
+        AddController addController = fxmlLoader.<AddController>getController();
+        addController.setCourse(course);
+        Stage stage = new Stage();
+        stage.setTitle("Update");
+        stage.setScene(new Scene(root));
+        stage.initStyle(StageStyle.UTILITY);
+        stage.show();
+        closeWindow(btnDelete);
     }
 
     void closeWindow(Button btn){

@@ -126,7 +126,6 @@ public class ShowAllController implements Initializable {
         btn.setOnAction(event -> {
             Parent root;
             try {
-//                root = FXMLLoader.load(getClass().getResource("../../../gui/back/courses/FindById.fxml"));
                 FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../gui/back/courses/FindById.fxml"));
                 root = (Parent)fxmlLoader.load();
                 FindByIdController findByIdController = fxmlLoader.<FindByIdController>getController();

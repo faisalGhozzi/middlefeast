@@ -98,6 +98,6 @@
          </children>
       </VBox>
       <Button layoutX="327.0" layoutY="327.0" mnemonicParsing="false" onAction="#updateCourse" styleClass="buttonSafe" stylesheets="@../../../css/ButtonStyle.css" text="Update" />
-      <Button layoutX="447.0" layoutY="327.0" mnemonicParsing="false" onAction="#deleteCourse" styleClass="buttonDelete" stylesheets="@../../../css/ButtonStyle.css" text="Delete" />
+      <Button fx:id="btnDelete" layoutX="447.0" layoutY="327.0" mnemonicParsing="false" onAction="#deleteCourse" styleClass="buttonDelete" stylesheets="@../../../css/ButtonStyle.css" text="Delete" />
    </children>
 </AnchorPane>

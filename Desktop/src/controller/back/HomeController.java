@@ -48,8 +48,10 @@ public class HomeController {
     }
 
     @FXML
-    void loadTutorials(ActionEvent event) {
-
+    void loadTutorials(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("../../gui/back/tutorials/Tutorials.fxml"));
+        displyaArea.getChildren().clear();
+        displyaArea.getChildren().add(fxml);
     }
 
     @FXML

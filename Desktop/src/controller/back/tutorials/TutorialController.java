@@ -1,5 +1,6 @@
-package controller.back.courses;
+package controller.back.tutorials;
 
+import controller.back.courses.AddCourseController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +10,7 @@ import javafx.scene.layout.AnchorPane;
 
 import java.io.IOException;
 
-public class CoursesController {
+public class TutorialController {
     @FXML
     private Button addCourseBtn;
 
@@ -22,7 +23,7 @@ public class CoursesController {
     @FXML
     void loadAddCourse(ActionEvent event) throws IOException {
         Parent root;
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../gui/back/courses/AddCourse.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../gui/back/tutorials/AddTutorial.fxml"));
         root = (Parent) fxmlLoader.load();
         AddCourseController addCourseController = fxmlLoader.<AddCourseController>getController();
         addCourseController.setCourse(null);
@@ -32,7 +33,7 @@ public class CoursesController {
 
     @FXML
     void loadViewCourses(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("../../../gui/back/courses/ShowAllCourses.fxml"));
+        Parent fxml = FXMLLoader.load(getClass().getResource("../../../gui/back/tutorials/ShowAllTutorials.fxml"));
         productDisplayArea.getChildren().removeAll();
         productDisplayArea.getChildren().add(fxml);
     }

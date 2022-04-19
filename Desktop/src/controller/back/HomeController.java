@@ -36,8 +36,10 @@ public class HomeController {
     }
 
     @FXML
-    void loadArticles(ActionEvent event) {
-
+    void loadArticles(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("../../gui/back/articles/Articles.fxml"));
+        displyaArea.getChildren().clear();
+        displyaArea.getChildren().add(fxml);
     }
 
     @FXML

@@ -133,7 +133,7 @@ public class ShowAllTutorialsController implements Initializable {
                 FindTutorialByIdController findTutorialByIdController = fxmlLoader.<FindTutorialByIdController>getController();
                 findTutorialByIdController.setTutorial(tutorial);
                 Stage stage = new Stage();
-                stage.setTitle("Courses infos");
+                stage.setTitle("Tutorial infos");
                 stage.resizableProperty().setValue(false);
                 stage.setScene(new Scene(root));
                 stage.show();

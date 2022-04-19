@@ -51,7 +51,7 @@ public class ArticleService implements IService<Article> {
         PreparedStatement pre =
                 con.prepareStatement(
                         "UPDATE `article` SET " +
-                                "bame = ?, " +
+                                "name = ?, " +
                                 "description = ?, " +
                                 "picture = ?, " +
                                 "date = ?, " +

@@ -50,7 +50,7 @@ public class FindCourseByIdController implements Initializable {
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
             lblDateDebut.setText(simpleDateFormat.format(course.getDateDebut()));
             lblDateFin.setText(simpleDateFormat.format(course.getDateFin()));
-            lblPrice.setText(String.valueOf(course.getPrice())+ " TND");
+            lblPrice.setText(course.getPrice() > 0 ? String.valueOf(course.getPrice())+ " TND" : "Free");
             lblDuration.setText(Integer.parseInt(course.getDuree()) < 2 ? course.getDuree() + " Day" : course.getDuree() + " Days");
             lblMode.setText(course.getMode());
         });

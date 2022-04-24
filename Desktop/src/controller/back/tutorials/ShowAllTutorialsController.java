@@ -80,7 +80,7 @@ public class ShowAllTutorialsController implements Initializable {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
                     Label lblDate = new Label(simpleDateFormat.format(data.get(i).getDateTuto()));
                     lblDate.setTextFill(Color.WHITE);
-                    Label lblPrice = new Label(String.valueOf(data.get(i).getPrix()) + "TND");
+                    Label lblPrice = new Label(data.get(i).getPrix() > 0 ? String.valueOf(data.get(i).getPrix()) + " TND" : "Free");
                     lblPrice.setTextFill(Color.WHITE);
                     grid.add(lblTitle, 0, i + 1, 1, 1);
                     grid.add(lblCategory, 1, i + 1, 1, 1);

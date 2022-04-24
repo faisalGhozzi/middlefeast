@@ -1,4 +1,4 @@
-package controller.back;
+package controller.front;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -25,7 +25,7 @@ public class HomeController {
     private Button btnTutorials;
 
     @FXML
-    private Button btnUsers;
+    private Button btnProfile;
 
     @FXML
     private AnchorPane displyaArea;
@@ -44,20 +44,20 @@ public class HomeController {
 
     @FXML
     void loadCourses(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("../../gui/back/courses/Courses.fxml"));
+        Parent fxml = FXMLLoader.load(getClass().getResource("../../gui/front/courses/Courses.fxml"));
         displyaArea.getChildren().clear();
         displyaArea.getChildren().add(fxml);
     }
 
     @FXML
     void loadTutorials(ActionEvent event) throws IOException {
-        Parent fxml = FXMLLoader.load(getClass().getResource("../../gui/back/tutorials/Tutorials.fxml"));
+        Parent fxml = FXMLLoader.load(getClass().getResource("../../gui/front/tutorials/Tutorials.fxml"));
         displyaArea.getChildren().clear();
         displyaArea.getChildren().add(fxml);
     }
 
     @FXML
-    void loadUsers(ActionEvent event) {
+    void loadProfile(ActionEvent event) {
 
     }
 

@@ -8,7 +8,7 @@ import javafx.stage.StageStyle;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("./gui/back/Home.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("./gui/front/Home.fxml"));
         primaryStage.setScene(new Scene(root));
         primaryStage.initStyle(StageStyle.UTILITY);
         primaryStage.show();

@@ -84,7 +84,7 @@ public class ShowAllCoursesController implements Initializable {
                     lblDateFin.setTextFill(Color.WHITE);
                     Label lblDuree = new Label(data.get(i).getDuree());
                     lblDuree.setTextFill(Color.WHITE);
-                    Label lblPrice = new Label(String.valueOf(data.get(i).getPrice()) + "TND");
+                    Label lblPrice = new Label(data.get(i).getPrice() > 0 ? String.valueOf(data.get(i).getPrice()) + " TND" : "Free");
                     lblPrice.setTextFill(Color.WHITE);
                     grid.add(lblDescription, 0, i + 1, 1, 1);
                     grid.add(lblMode, 1, i + 1, 1, 1);

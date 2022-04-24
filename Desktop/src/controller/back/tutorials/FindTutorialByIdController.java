@@ -64,7 +64,7 @@ public class FindTutorialByIdController implements Initializable {
             videoDisplay.setMediaPlayer(player);
             lblDescription.setText(tutorial.getDescription());
             lblTitle.setText(tutorial.getTitre());
-            lblPrice.setText(String.valueOf(tutorial.getPrix()));
+            lblPrice.setText(tutorial.getPrix() > 0 ? String.valueOf(tutorial.getPrix()) + " TND" : "Free");
             lblCategory.setText(tutorial.getCategory());
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
             lblDate.setText(simpleDateFormat.format(tutorial.getDateTuto()));

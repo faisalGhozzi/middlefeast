@@ -82,7 +82,7 @@
             <Label prefHeight="50.0" />
             <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#addToFav" styleClass="buttonSafe" stylesheets="@../../../css/ButtonStyle.css" text="Add to fav" />
+                  <Button fx:id="btnFav" mnemonicParsing="false" onAction="#addToFav" styleClass="buttonSafe" stylesheets="@../../../css/ButtonStyle.css" text="Add to fav" />
                </children>
             </HBox>
          </children>

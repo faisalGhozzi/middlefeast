@@ -1,14 +1,14 @@
 package service;
 
 import entity.Article;
+import entity.User;
 import entity.WishlistArticle;
 import service_interface.IService;
 import utils.Database;
 
 import java.sql.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.Date;
-import java.util.List;
 
 public class WishlistArticleService implements IService<WishlistArticle> {
 
@@ -74,6 +74,26 @@ public class WishlistArticleService implements IService<WishlistArticle> {
             wishlistArticleList.add(wishlistArticle);
         }
         return wishlistArticleList;
+    }
+
+    public List<Article> findByUser(User user) throws SQLException {
+        List<Article> articleList = new ArrayList<>();
+        ste = con.createStatement();
+        ResultSet rs = ste.executeQuery("SELECT * FROM userfavoris INNER JOIN article ON userfavoris.article_id = article.id WHERE user_id = "+user.getId());
+        while (rs.next()){
+            Article article = new Article(
+                    rs.getInt(4),
+                    rs.getString(5),
+                    rs.getString(6),
+                    rs.getString(7),
+                    (Date) rs.getObject(8),
+                    rs.getString(9),
+                    rs.getInt(10),
+                    rs.getInt(1)
+                    );
+            articleList.add(article);
+        }
+        return articleList;
     }
 
     @Override

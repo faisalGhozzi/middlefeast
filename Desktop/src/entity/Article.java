@@ -15,6 +15,7 @@ public class Article {
     private Date date;
     private String recette;
     private int vues;
+    private int favid = 0;
 
     public Article() {
     }
@@ -27,6 +28,17 @@ public class Article {
         this.date = date;
         this.recette = recette;
         this.vues = vues;
+    }
+
+    public Article(int id, String name, String description, String picture, Date date, String recette, int vues, int favid) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.picture = picture;
+        this.date = date;
+        this.recette = recette;
+        this.vues = vues;
+        this.favid = favid;
     }
 
     public Article(String name, String description, String picture, Date date, String recette, int vues) {
@@ -92,6 +104,14 @@ public class Article {
 
     public void setVues(int vues) {
         this.vues = vues;
+    }
+
+    public int getFavid() {
+        return favid;
+    }
+
+    public void setFavid(int favid) {
+        this.favid = favid;
     }
 
     @Override

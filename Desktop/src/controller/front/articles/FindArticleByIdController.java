@@ -3,6 +3,7 @@ package controller.front.articles;
 import controller.back.articles.AddArticleController;
 import controller.back.articles.ConfirmDeleteArticleController;
 import entity.Article;
+import entity.WishlistArticle;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,16 +17,18 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import service.WishlistArticleService;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
 public class FindArticleByIdController implements Initializable {
 
     @FXML
-    private Button btnDelete;
+    private Button btnFav;
 
     @FXML
     private ImageView imgDisplay;
@@ -47,6 +50,8 @@ public class FindArticleByIdController implements Initializable {
 
     private Article article;
 
+    private WishlistArticleService wishlistArticleService = new WishlistArticleService();
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Platform.runLater(() -> {
@@ -58,24 +63,35 @@ public class FindArticleByIdController implements Initializable {
             lblViews.setText(String.valueOf(article.getVues()));
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
             lblDate.setText(simpleDateFormat.format(article.getDate()));
+            if(article.getFavid() != 0){
+                btnFav.setText("Remove");
+                btnFav.setStyle(
+                        "-fx-background-color: #e71e1e;"
+                );
+            }
         });
     }
 
     @FXML
-    void addToFav(ActionEvent event) {
-        Parent root;
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../gui/front/articles/InfoScreenArticle.fxml"));
-            root = (Parent)fxmlLoader.load();
-            InfoScreenArticleController infoScreenArticleController = fxmlLoader.<InfoScreenArticleController>getController();
-            infoScreenArticleController.setMessage("Article added to favorites");
-            Stage stage = new Stage();
-            stage.setTitle("Info");
-            stage.setScene(new Scene(root));
-            stage.initStyle(StageStyle.UNDECORATED);
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
+    void addToFav(ActionEvent event) throws SQLException{
+        if(article.getFavid() != 0){
+            wishlistArticleService.delete(article.getFavid());
+        }else{
+            Parent root;
+            try {
+                wishlistArticleService.add(new WishlistArticle(1, article.getId()));
+                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../gui/front/articles/InfoScreenArticle.fxml"));
+                root = (Parent)fxmlLoader.load();
+                InfoScreenArticleController infoScreenArticleController = fxmlLoader.<InfoScreenArticleController>getController();
+                infoScreenArticleController.setMessage("Article added to favorites");
+                Stage stage = new Stage();
+                stage.setTitle("Info");
+                stage.setScene(new Scene(root));
+                stage.initStyle(StageStyle.UNDECORATED);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 

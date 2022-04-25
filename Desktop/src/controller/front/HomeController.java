@@ -25,7 +25,7 @@ public class HomeController {
     private Button btnTutorials;
 
     @FXML
-    private Button btnProfile;
+    private Button btnWishlist;
 
     @FXML
     private AnchorPane displyaArea;
@@ -57,8 +57,10 @@ public class HomeController {
     }
 
     @FXML
-    void loadProfile(ActionEvent event) {
-
+    void loadWishlist(ActionEvent event) throws IOException {
+        Parent fxml = FXMLLoader.load(getClass().getResource("../../gui/front/wishlists/Wishlists.fxml"));
+        displyaArea.getChildren().clear();
+        displyaArea.getChildren().add(fxml);
     }
 
     @FXML

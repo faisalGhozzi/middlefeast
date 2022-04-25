@@ -59,7 +59,7 @@
                   </ImageView>
                </graphic>
             </Button>
-            <Button fx:id="btnProfile" alignment="BASELINE_LEFT" graphicTextGap="25.0" mnemonicParsing="false" onAction="#loadProfile" prefHeight="60.0" prefWidth="280.0" styleClass="buttonFrnt" stylesheets="@../../css/ButtonStyle.css" text="Profile" textFill="WHITE">
+            <Button fx:id="btnWishlist" alignment="BASELINE_LEFT" graphicTextGap="25.0" mnemonicParsing="false" onAction="#loadWishlist" prefHeight="60.0" prefWidth="280.0" styleClass="buttonFrnt" stylesheets="@../../css/ButtonStyle.css" text="Wishlist" textFill="WHITE">
                <padding>
                   <Insets left="50.0" />
                </padding>

@@ -2,6 +2,7 @@ package controller.front.articles;
 
 import controller.back.articles.AddArticleController;
 import controller.back.articles.ConfirmDeleteArticleController;
+import controller.front.wishlists.ConfirmDeleteFromWishlistController;
 import entity.Article;
 import entity.WishlistArticle;
 import javafx.application.Platform;
@@ -73,25 +74,29 @@ public class FindArticleByIdController implements Initializable {
     }
 
     @FXML
-    void addToFav(ActionEvent event) throws SQLException{
+    void addToFav(ActionEvent event) throws SQLException, IOException {
+        Parent root;
         if(article.getFavid() != 0){
-            wishlistArticleService.delete(article.getFavid());
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../gui/front/wishlists/ConfirmDeleteFromWishlist.fxml"));
+            root = (Parent)fxmlLoader.load();
+            ConfirmDeleteFromWishlistController confirmDeleteFromWishlistController = fxmlLoader.<ConfirmDeleteFromWishlistController>getController();
+            confirmDeleteFromWishlistController.setArticle(article);
+            Stage stage = new Stage();
+            stage.setTitle("Confirmation");
+            stage.setScene(new Scene(root));
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.show();
         }else{
-            Parent root;
-            try {
-                wishlistArticleService.add(new WishlistArticle(1, article.getId()));
-                FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../gui/front/articles/InfoScreenArticle.fxml"));
-                root = (Parent)fxmlLoader.load();
-                InfoScreenArticleController infoScreenArticleController = fxmlLoader.<InfoScreenArticleController>getController();
-                infoScreenArticleController.setMessage("Article added to favorites");
-                Stage stage = new Stage();
-                stage.setTitle("Info");
-                stage.setScene(new Scene(root));
-                stage.initStyle(StageStyle.UNDECORATED);
-                stage.show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            wishlistArticleService.add(new WishlistArticle(1, article.getId()));
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("../../../gui/front/articles/InfoScreenArticle.fxml"));
+            root = (Parent)fxmlLoader.load();
+            InfoScreenArticleController infoScreenArticleController = fxmlLoader.<InfoScreenArticleController>getController();
+            infoScreenArticleController.setMessage("Article added to favorites");
+            Stage stage = new Stage();
+            stage.setTitle("Info");
+            stage.setScene(new Scene(root));
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.show();
         }
     }
 
